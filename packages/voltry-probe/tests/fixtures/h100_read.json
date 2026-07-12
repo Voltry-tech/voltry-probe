@@ -1,0 +1,29 @@
+{
+  "captured_at": "2026-06-17T09:00:00+00:00",
+  "nvml": {
+    "device": {
+      "name": "NVIDIA H100 80GB HBM3",
+      "part": "H100-SXM5",
+      "serial": "1320923000123",
+      "uuid": "GPU-0a1b2c3d-4e5f-6071-8293-a4b5c6d7e8f9",
+      "vbios_version": "96.00.89.00.01"
+    },
+    "ecc": {
+      "volatile": { "correctable": 0, "uncorrectable": 0 },
+      "aggregate": { "correctable": 12, "uncorrectable": 0 }
+    },
+    "xid": [],
+    "pages": { "retired_sbe": 3, "retired_dbe": 0, "pending": 0 },
+    "remapped_rows": { "corrRows": 3, "uncRows": 0, "isPending": 0, "failureOccurred": 0 },
+    "throttle_reasons": [],
+    "thermals": { "gpu": 41, "memory": 49, "hotspot": 55, "throttle": 87 },
+    "clocks": { "sm": 1980, "mem": 2619 },
+    "power": { "draw": 312, "limit": 700, "enforced": 700, "default": 700 }
+  },
+  "dcgm": {
+    "nvlink": { "active": 18, "total": 18, "replay_errors": 0, "recovery_errors": 0, "crc_errors": 0 },
+    "pcie": { "gen": 5, "width": 16, "replay_counter": 0, "correctable_errors": 0, "fatal_errors": 0, "nonfatal_errors": 0 }
+  },
+  "redfish": { "board_id": "BOARD-1320923000123", "chassis": "DGX-H100" },
+  "attestation": null
+}

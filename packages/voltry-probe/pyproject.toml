@@ -1,0 +1,83 @@
+[project]
+name = "voltry-probe"
+version = "0.3.1"
+description = "Local evidence capture, signing, and offline certificate rendering for data-center GPUs. Scan reads NVML without mutating the device and verifies operator-supplied attestation reports; submission is a separate opt-in command."
+requires-python = ">=3.10"
+license = "Apache-2.0"
+readme = "README.md"
+authors = [{ name = "Voltry" }]
+keywords = ["gpu", "nvml", "attestation", "provenance", "evidence", "certificate"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Typing :: Typed",
+  "Operating System :: OS Independent",
+]
+dependencies = [
+  "voltry-evidence-schema>=1.2,<2",
+  "pydantic>=2.11,<3",
+  "cryptography>=44,<50",
+  "rfc8785>=0.1.4,<0.2",
+  "typer>=0.12,<1",
+]
+
+[project.urls]
+Homepage = "https://www.voltry.io"
+Verify = "https://verify.voltry.io"
+Source = "https://github.com/Voltry-tech/voltry-probe"
+Issues = "https://github.com/Voltry-tech/voltry-probe/issues"
+Changelog = "https://github.com/Voltry-tech/voltry-probe/blob/main/packages/voltry-probe/CHANGELOG.md"
+
+[project.scripts]
+voltry = "voltry_probe.cli:main"
+
+[project.optional-dependencies]
+# The live NVML reader (nvidia-ml-py). Lazy-imported by sources/live.py; absent on
+# dev/CI, where the probe runs against captured fixtures / the DCGM simulator
+# (read-only either way).
+hardware = [
+  "nvidia-ml-py>=12.560,<13",
+]
+# The network client for `voltry submit` only. Kept optional so scan/cert stay offline
+# and dependency-light.
+submit = [
+  "httpx>=0.27,<1",
+]
+
+# Published on PyPI with a 3.10 floor (ADR-0003): lint for the floor, not the
+# workspace default. `extend` keeps the root select/per-file-ignores rules.
+[tool.ruff]
+extend = "../../pyproject.toml"
+target-version = "py310"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["voltry_probe"]
+
+# Keep repo-local working files and tool caches out of the published sdist.
+# Hatchling always bundles a .gitignore into the sdist; this package carries its own
+# so the repo-root ignore file never ships in its place.
+[tool.hatch.build.targets.sdist]
+exclude = ["CLAUDE.md", "AGENTS.md", ".claude", ".hypothesis", ".pytest_cache", ".ruff_cache", ".coverage"]
+
+# voltry-evidence-schema resolves from the workspace locally and from PyPI when published.
+[tool.uv.sources]
+voltry-evidence-schema = { workspace = true }
+
+[tool.pytest.ini_options]
+addopts = "-q --import-mode=importlib"
+testpaths = ["tests"]
+filterwarnings = ["error"]
+
+[tool.coverage.run]
+branch = true
+source = ["voltry_probe"]
+
+[tool.coverage.report]
+exclude_also = ["if TYPE_CHECKING:", "raise NotImplementedError", "@(abc\\.)?abstractmethod"]

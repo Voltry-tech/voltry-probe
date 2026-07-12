@@ -1,0 +1,1823 @@
+{
+  "$defs": {
+    "AgentInfo": {
+      "additionalProperties": false,
+      "description": "Identity of the probe build that produced the bundle (for replay + provenance).",
+      "properties": {
+        "build": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Build/commit identifier.",
+          "title": "Build"
+        },
+        "cuda_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "CUDA runtime/driver version observed.",
+          "title": "Cuda Version"
+        },
+        "dcgm_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "DCGM library version observed, if used.",
+          "title": "Dcgm Version"
+        },
+        "driver_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "NVIDIA driver version observed.",
+          "title": "Driver Version"
+        },
+        "host_arch": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Host architecture, e.g. 'x86_64', 'aarch64'.",
+          "title": "Host Arch"
+        },
+        "name": {
+          "description": "Agent name, e.g. 'voltry-probe'.",
+          "title": "Name",
+          "type": "string"
+        },
+        "nvml_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "NVML library version observed.",
+          "title": "Nvml Version"
+        },
+        "run_mode": {
+          "$ref": "#/$defs/RunMode",
+          "description": "Mode the agent ran in (READ/FUNCTIONAL/MONITOR)."
+        },
+        "version": {
+          "description": "Agent semantic version.",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "run_mode"
+      ],
+      "title": "AgentInfo",
+      "type": "object"
+    },
+    "Attestation": {
+      "additionalProperties": false,
+      "description": "NVIDIA attestation result for this scan.\n\nThe verdict is whatever the chain evaluation actually returned; the outcome\nsemantics (UNVERIFIED, FALLBACK, and so on) live on\n:class:`~evidence_schema.enums.AttestationVerdict`.",
+      "properties": {
+        "challenge": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Operator-issued challenge nonce for this scan, recorded so a third party can recompute the freshness comparison against the raw report's nonce. None means no challenge was issued (pre-1.2.0 flow).",
+          "title": "Challenge"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Human-readable note on the attestation outcome.",
+          "title": "Detail"
+        },
+        "freshness": {
+          "$ref": "#/$defs/GateResult",
+          "default": "NOT_ASSESSED",
+          "description": "Challenge-nonce freshness of the report. PASS: the report's nonce matches the operator-issued challenge. FAIL: mismatch (replay indication, disqualifying). NOT_ASSESSED: no challenge was issued; freshness rests on the measured_at window only, at lower confidence."
+        },
+        "measured_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "When attestation was performed (UTC).",
+          "title": "Measured At"
+        },
+        "nras_used": {
+          "default": false,
+          "description": "Whether NRAS (remote attestation service) was used.",
+          "title": "Nras Used",
+          "type": "boolean"
+        },
+        "report_b64": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Verbatim attestation report (opaque, base64). Replay substrate.",
+          "title": "Report B64"
+        },
+        "root_reachability": {
+          "description": "Whether the NVIDIA root/PKI was reachable; False means the verdict cannot be VERIFIED online.",
+          "title": "Root Reachability",
+          "type": "boolean"
+        },
+        "scheme": {
+          "$ref": "#/$defs/IdentityScheme",
+          "description": "Identity anchoring scheme used."
+        },
+        "verdict": {
+          "$ref": "#/$defs/AttestationVerdict",
+          "description": "Real verdict of the attestation chain evaluation."
+        }
+      },
+      "required": [
+        "scheme",
+        "verdict",
+        "root_reachability"
+      ],
+      "title": "Attestation",
+      "type": "object"
+    },
+    "AttestationVerdict": {
+      "description": "Result of the NVIDIA attestation chain verification.\n\nThe verdict records what the chain evaluation actually returned; there is no\ndefault-to-verified path. ``UNVERIFIED`` means the chain could not be\nevaluated (e.g. PKI unreachable); ``FALLBACK`` means a secondary,\nlower-confidence scheme was used and is marked as such.",
+      "enum": [
+        "VERIFIED",
+        "FAILED",
+        "UNVERIFIED",
+        "FALLBACK"
+      ],
+      "title": "AttestationVerdict",
+      "type": "string"
+    },
+    "ClockPower": {
+      "additionalProperties": false,
+      "description": "Clock and power snapshot (facts).",
+      "properties": {
+        "default_power_limit_w": {
+          "anyOf": [
+            {
+              "maximum": 10000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Default power limit (W).",
+          "title": "Default Power Limit W"
+        },
+        "enforced_power_limit_w": {
+          "anyOf": [
+            {
+              "maximum": 10000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Enforced power limit (W).",
+          "title": "Enforced Power Limit W"
+        },
+        "graphics_clock_mhz": {
+          "anyOf": [
+            {
+              "maximum": 100000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Graphics clock (MHz).",
+          "title": "Graphics Clock Mhz"
+        },
+        "mem_clock_mhz": {
+          "anyOf": [
+            {
+              "maximum": 100000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Memory clock (MHz).",
+          "title": "Mem Clock Mhz"
+        },
+        "power_draw_w": {
+          "anyOf": [
+            {
+              "maximum": 10000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Instantaneous power draw (W).",
+          "title": "Power Draw W"
+        },
+        "power_limit_w": {
+          "anyOf": [
+            {
+              "maximum": 10000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Configured power limit (W).",
+          "title": "Power Limit W"
+        },
+        "sm_clock_mhz": {
+          "anyOf": [
+            {
+              "maximum": 100000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "SM clock (MHz).",
+          "title": "Sm Clock Mhz"
+        }
+      },
+      "title": "ClockPower",
+      "type": "object"
+    },
+    "DeterministicGates": {
+      "additionalProperties": false,
+      "description": "Certificate block 1: deterministic pass/fail gates, no model.\n\nAuthenticity and firmware failures are **disqualifying** (the unit cannot be\ncertified genuine). A gate that was not run is ``NOT_ASSESSED``, never PASS.",
+      "properties": {
+        "authenticity": {
+          "$ref": "#/$defs/GateResult",
+          "description": "Device authenticity via attestation. FAIL is disqualifying."
+        },
+        "data_sanitization": {
+          "$ref": "#/$defs/GateResult",
+          "default": "NOT_ASSESSED",
+          "description": "Data sanitization per IEEE 2883-2022 (functional mode)."
+        },
+        "firmware_vbios": {
+          "$ref": "#/$defs/GateResult",
+          "description": "Firmware/VBIOS integrity (no re-flash). FAIL is disqualifying."
+        },
+        "functional_burnin": {
+          "$ref": "#/$defs/GateResult",
+          "default": "NOT_ASSESSED",
+          "description": "Functional burn-in pass (functional mode)."
+        },
+        "sdc_functional": {
+          "$ref": "#/$defs/GateResult",
+          "default": "NOT_ASSESSED",
+          "description": "Silent-data-corruption functional test (functional mode)."
+        }
+      },
+      "required": [
+        "authenticity",
+        "firmware_vbios"
+      ],
+      "title": "DeterministicGates",
+      "type": "object"
+    },
+    "DutyBlock": {
+      "additionalProperties": false,
+      "description": "Cumulative use, the odometer (added in schema 1.1.0).\n\nNVML exposes no lifetime-hours counter, so duty can only be ACCUMULATED\n(registry deltas across scans, or continuous monitoring), never read in one\nshot. Every field is optional: a quantity that has not been accumulated stays\nNone (rendered as Not Assessed) rather than being estimated from a single\npoint-in-time read. ``basis`` states how the values were accumulated so a\nreader can weigh them.",
+      "properties": {
+        "basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "How duty was accumulated: 'registry_accumulated' (deltas across ledger scans) or 'monitor_continuous' (Gold monitoring). None = not accumulated.",
+          "title": "Basis"
+        },
+        "energy_kwh_total": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Cumulative energy through the board, kWh.",
+          "title": "Energy Kwh Total"
+        },
+        "gpu_hours_total": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Cumulative GPU-hours on the record.",
+          "title": "Gpu Hours Total"
+        },
+        "since": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Accumulation start (first scan or born-on).",
+          "title": "Since"
+        },
+        "sustained_high_power_hours": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Cumulative hours at sustained high power (>95% TDP).",
+          "title": "Sustained High Power Hours"
+        },
+        "thermal_cycles_total": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Cumulative thermal cycles on the record.",
+          "title": "Thermal Cycles Total"
+        }
+      },
+      "title": "DutyBlock",
+      "type": "object"
+    },
+    "EccCounters": {
+      "additionalProperties": false,
+      "description": "ECC error counters captured wide (volatile + aggregate, SRAM + DRAM).",
+      "properties": {
+        "aggregate_correctable": {
+          "default": 0,
+          "description": "Lifetime aggregate correctable ECC errors.",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Aggregate Correctable",
+          "type": "integer"
+        },
+        "aggregate_uncorrectable": {
+          "default": 0,
+          "description": "Lifetime aggregate uncorrectable ECC errors.",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Aggregate Uncorrectable",
+          "type": "integer"
+        },
+        "dram_correctable": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "DRAM/HBM correctable errors, if separable.",
+          "title": "Dram Correctable"
+        },
+        "dram_uncorrectable": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "DRAM/HBM uncorrectable errors, if separable.",
+          "title": "Dram Uncorrectable"
+        },
+        "sram_correctable": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "SRAM correctable errors, if separable.",
+          "title": "Sram Correctable"
+        },
+        "sram_uncorrectable": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "SRAM uncorrectable errors, if separable.",
+          "title": "Sram Uncorrectable"
+        },
+        "volatile_correctable": {
+          "default": 0,
+          "description": "Volatile correctable ECC errors.",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Volatile Correctable",
+          "type": "integer"
+        },
+        "volatile_uncorrectable": {
+          "default": 0,
+          "description": "Volatile uncorrectable ECC errors.",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Volatile Uncorrectable",
+          "type": "integer"
+        }
+      },
+      "title": "EccCounters",
+      "type": "object"
+    },
+    "EnvironmentBlock": {
+      "additionalProperties": false,
+      "description": "Facility-layer context from a data-center connector. Absent means exposure\nrenders as Not Assessed.\n\nExposure is never inferred from board power (board-side draw says nothing about\nsupply quality); it requires real facility instrumentation, which lands here\nwhen a connector is present.",
+      "properties": {
+        "connector": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Facility connector/source name.",
+          "title": "Connector"
+        },
+        "facility_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Opaque facility identifier (no PII).",
+          "title": "Facility Id"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Free-form facility notes (no PII).",
+          "title": "Notes"
+        },
+        "power_quality_instrumented": {
+          "default": false,
+          "description": "Whether facility power-quality instrumentation is present.",
+          "title": "Power Quality Instrumented",
+          "type": "boolean"
+        }
+      },
+      "title": "EnvironmentBlock",
+      "type": "object"
+    },
+    "FunctionalBlock": {
+      "additionalProperties": false,
+      "description": "Functional-mode results (drained unit). Present only when functional mode ran.",
+      "properties": {
+        "burnin_duration_s": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Burn-in duration (seconds).",
+          "title": "Burnin Duration S"
+        },
+        "burnin_result": {
+          "$ref": "#/$defs/GateResult",
+          "default": "NOT_ASSESSED",
+          "description": "Burn-in result."
+        },
+        "dcgm_result": {
+          "$ref": "#/$defs/GateResult",
+          "default": "NOT_ASSESSED",
+          "description": "DCGM diagnostic result."
+        },
+        "dcgm_runlevel": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "DCGM diagnostic run level (r1-r4).",
+          "title": "Dcgm Runlevel"
+        },
+        "sanitization": {
+          "$ref": "#/$defs/Sanitization",
+          "description": "Data sanitization record."
+        },
+        "sdc_detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "SDC test detail.",
+          "title": "Sdc Detail"
+        },
+        "sdc_functional": {
+          "$ref": "#/$defs/GateResult",
+          "default": "NOT_ASSESSED",
+          "description": "SDC functional pass/fail."
+        }
+      },
+      "title": "FunctionalBlock",
+      "type": "object"
+    },
+    "GateResult": {
+      "description": "Outcome of a deterministic gate or functional pass/fail.\n\n``NOT_ASSESSED`` is a first-class value: a gate that was not run is never\nsilently treated as PASS, and consumers must render it as its own state\nrather than folding it into either outcome.",
+      "enum": [
+        "PASS",
+        "FAIL",
+        "NOT_ASSESSED"
+      ],
+      "title": "GateResult",
+      "type": "string"
+    },
+    "History": {
+      "description": "Whether the unit's history was captured from first-seen or reconstructed.",
+      "enum": [
+        "BORN_ON",
+        "RECONSTRUCTED"
+      ],
+      "title": "History",
+      "type": "string"
+    },
+    "IdentityBlock": {
+      "additionalProperties": false,
+      "description": "The permanent identity of the unit and its authenticity evidence.",
+      "properties": {
+        "attestation": {
+          "$ref": "#/$defs/Attestation",
+          "description": "Attestation result for this identity."
+        },
+        "authenticity_confidence": {
+          "description": "Confidence in authenticity [0,1]. Lower for SECONDARY_FALLBACK parts.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Authenticity Confidence",
+          "type": "number"
+        },
+        "board_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Board id / chassis-relative id, if available.",
+          "title": "Board Id"
+        },
+        "device_model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Detailed model/board name if available.",
+          "title": "Device Model"
+        },
+        "device_part": {
+          "description": "Marketing/part identifier, e.g. 'H100-SXM5'.",
+          "title": "Device Part",
+          "type": "string"
+        },
+        "ecc384_id": {
+          "description": "Device-unique ECC-384 identity (hex/base64 string). The permanent key.",
+          "title": "Ecc384 Id",
+          "type": "string"
+        },
+        "gates": {
+          "$ref": "#/$defs/DeterministicGates",
+          "description": "Deterministic gates (certificate block 1)."
+        },
+        "gpu_uuid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "NVML GPU UUID, if available.",
+          "title": "Gpu Uuid"
+        },
+        "identity_scheme": {
+          "$ref": "#/$defs/IdentityScheme",
+          "description": "Whether identity is hardware-rooted or a fallback."
+        },
+        "reflash_detected": {
+          "description": "True if VBIOS re-flash/tamper was detected.",
+          "title": "Reflash Detected",
+          "type": "boolean"
+        },
+        "serial": {
+          "description": "Board/device serial as reported (string; may be long).",
+          "title": "Serial",
+          "type": "string"
+        },
+        "vbios_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "VBIOS measurement hash (for re-flash detection).",
+          "title": "Vbios Hash"
+        },
+        "vbios_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "VBIOS version string.",
+          "title": "Vbios Version"
+        }
+      },
+      "required": [
+        "device_part",
+        "serial",
+        "ecc384_id",
+        "attestation",
+        "reflash_detected",
+        "identity_scheme",
+        "authenticity_confidence",
+        "gates"
+      ],
+      "title": "IdentityBlock",
+      "type": "object"
+    },
+    "IdentityScheme": {
+      "description": "How the device identity is anchored.",
+      "enum": [
+        "HARDWARE_ROOT",
+        "SECONDARY_FALLBACK"
+      ],
+      "title": "IdentityScheme",
+      "type": "string"
+    },
+    "JsonValue": {},
+    "MeasuredBlock": {
+      "additionalProperties": false,
+      "description": "Certificate block 2: measured condition (facts vs thresholds, no weights, no model).\n\nWide and extensible. Everything a future modeled track could need is captured\nhere even though nothing modeled is computed from it yet; first scans cannot be\nre-run, so under-capturing now would be an unrecoverable loss. ``extensions`` is\nthe additive landing zone for underwriter fields that are not yet first-class\n(still typed JSON, no ``Any``).",
+      "properties": {
+        "clock_power": {
+          "$ref": "#/$defs/ClockPower",
+          "description": "Clock/power snapshot."
+        },
+        "duty": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DutyBlock"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Cumulative use (the odometer), registry-accumulated. None until accumulation exists; not derived from a single read (added in schema 1.1.0)."
+        },
+        "ecc": {
+          "$ref": "#/$defs/EccCounters",
+          "description": "ECC error counters."
+        },
+        "extensions": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "description": "Additive, forward-compatible capture (underwriter fields). JSON values only; integers stay within the safe-integer domain (large/opaque data belongs in raw_reads).",
+          "title": "Extensions",
+          "type": "object"
+        },
+        "nvlink": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NvLinkStatus"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "NVLink status, if present."
+        },
+        "pages": {
+          "$ref": "#/$defs/PageRetirement",
+          "description": "Retired/remapped page accounting."
+        },
+        "pcie": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PcieStatus"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "PCIe link status, if available."
+        },
+        "spare_rows": {
+          "$ref": "#/$defs/SpareRows",
+          "description": "HBM spare-row headroom (end-of-life gauge)."
+        },
+        "stability": {
+          "$ref": "#/$defs/StabilitySignals",
+          "description": "Throttle/stability flags."
+        },
+        "thermals": {
+          "$ref": "#/$defs/Thermals",
+          "description": "Thermal snapshot."
+        },
+        "xid": {
+          "description": "Normalized Xid event history.",
+          "items": {
+            "$ref": "#/$defs/XidEvent"
+          },
+          "title": "Xid",
+          "type": "array"
+        }
+      },
+      "required": [
+        "spare_rows"
+      ],
+      "title": "MeasuredBlock",
+      "type": "object"
+    },
+    "NvLinkStatus": {
+      "additionalProperties": false,
+      "description": "NVLink presence/health captured wide (hardware sub-index input).",
+      "properties": {
+        "active_links": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Number of active NVLink links.",
+          "title": "Active Links"
+        },
+        "crc_errors": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "NVLink CRC errors.",
+          "title": "Crc Errors"
+        },
+        "recovery_errors": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "NVLink recovery errors.",
+          "title": "Recovery Errors"
+        },
+        "replay_errors": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "NVLink replay errors.",
+          "title": "Replay Errors"
+        },
+        "total_links": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Total NVLink links on the board.",
+          "title": "Total Links"
+        }
+      },
+      "title": "NvLinkStatus",
+      "type": "object"
+    },
+    "PageRetirement": {
+      "additionalProperties": false,
+      "description": "Retired/remapped memory page accounting.",
+      "properties": {
+        "pending_retirement": {
+          "default": 0,
+          "description": "Pages pending retirement.",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Pending Retirement",
+          "type": "integer"
+        },
+        "remapped": {
+          "default": 0,
+          "description": "Remapped rows/pages (the wear signal toward the 512 cap).",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Remapped",
+          "type": "integer"
+        },
+        "retired": {
+          "default": 0,
+          "description": "Total retired pages.",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Retired",
+          "type": "integer"
+        },
+        "retired_dbe": {
+          "default": 0,
+          "description": "Pages retired due to double-bit errors.",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Retired Dbe",
+          "type": "integer"
+        },
+        "retired_sbe": {
+          "default": 0,
+          "description": "Pages retired due to single-bit errors.",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Retired Sbe",
+          "type": "integer"
+        }
+      },
+      "title": "PageRetirement",
+      "type": "object"
+    },
+    "PcieStatus": {
+      "additionalProperties": false,
+      "description": "PCIe link status captured wide.",
+      "properties": {
+        "correctable_errors": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "PCIe correctable errors.",
+          "title": "Correctable Errors"
+        },
+        "fatal_errors": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "PCIe fatal errors.",
+          "title": "Fatal Errors"
+        },
+        "gen": {
+          "anyOf": [
+            {
+              "maximum": 10,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Negotiated PCIe generation.",
+          "title": "Gen"
+        },
+        "nonfatal_errors": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "PCIe non-fatal errors.",
+          "title": "Nonfatal Errors"
+        },
+        "replay_counter": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "PCIe replay counter.",
+          "title": "Replay Counter"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "maximum": 64,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Negotiated PCIe lane width.",
+          "title": "Width"
+        }
+      },
+      "title": "PcieStatus",
+      "type": "object"
+    },
+    "ProvenanceBlock": {
+      "additionalProperties": false,
+      "description": "Certificate block 4: provenance and coverage. ``exposure_assessed`` defaults to\nFalse and is rendered prominently; it is only True with real facility\ninstrumentation.",
+      "properties": {
+        "born_on": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "First-seen timestamp (born-on), if known.",
+          "title": "Born On"
+        },
+        "chain_gaps": {
+          "description": "Whether there are gaps in the custody/telemetry chain.",
+          "title": "Chain Gaps",
+          "type": "boolean"
+        },
+        "custody_pointer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Opaque pointer to custody records (no PII).",
+          "title": "Custody Pointer"
+        },
+        "exposure_assessed": {
+          "default": false,
+          "description": "True only with facility instrumentation. Never inferred from board power; rendered prominently.",
+          "title": "Exposure Assessed",
+          "type": "boolean"
+        },
+        "first_seen": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Earliest observation of this unit (UTC).",
+          "title": "First Seen"
+        },
+        "history": {
+          "$ref": "#/$defs/History",
+          "description": "BORN_ON (captured from first-seen) or RECONSTRUCTED."
+        },
+        "reconstructed_from": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Provenance source when RECONSTRUCTED.",
+          "title": "Reconstructed From"
+        },
+        "tier": {
+          "$ref": "#/$defs/Tier",
+          "description": "Provenance/coverage tier (BRONZE/SILVER/GOLD)."
+        }
+      },
+      "required": [
+        "tier",
+        "history",
+        "chain_gaps"
+      ],
+      "title": "ProvenanceBlock",
+      "type": "object"
+    },
+    "RawPayload": {
+      "additionalProperties": false,
+      "description": "A single verbatim source payload: the replay substrate.\n\nStored as an **opaque string** (raw text or base64) so it is byte-exact and so any\nlarge numbers in raw telemetry are preserved without lossy JSON-number round-tripping.",
+      "properties": {
+        "captured_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "When this payload was captured (UTC).",
+          "title": "Captured At"
+        },
+        "content": {
+          "description": "Verbatim payload content as returned by the source.",
+          "title": "Content",
+          "type": "string"
+        },
+        "format": {
+          "default": "json",
+          "description": "Encoding of `content`: 'json' | 'text' | 'base64'.",
+          "title": "Format",
+          "type": "string"
+        },
+        "key": {
+          "description": "Logical name of this payload (e.g. the API/field it came from).",
+          "title": "Key",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Hex SHA-256 of `content` (producer-computed integrity tag).",
+          "title": "Sha256"
+        },
+        "source": {
+          "description": "Source library, e.g. 'nvml', 'dcgm', 'redfish', 'attestation'.",
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "key",
+        "content"
+      ],
+      "title": "RawPayload",
+      "type": "object"
+    },
+    "RawReads": {
+      "additionalProperties": false,
+      "description": "All verbatim source payloads. Future model versions re-process this; never discard.",
+      "properties": {
+        "payloads": {
+          "description": "Verbatim NVML/DCGM/Redfish/attestation payloads (the replay substrate).",
+          "items": {
+            "$ref": "#/$defs/RawPayload"
+          },
+          "title": "Payloads",
+          "type": "array"
+        }
+      },
+      "title": "RawReads",
+      "type": "object"
+    },
+    "RunMode": {
+      "description": "The mode the agent ran in to produce the bundle.",
+      "enum": [
+        "READ",
+        "FUNCTIONAL",
+        "MONITOR"
+      ],
+      "title": "RunMode",
+      "type": "string"
+    },
+    "Sanitization": {
+      "additionalProperties": false,
+      "description": "Data sanitization record (IEEE 2883-2022).",
+      "properties": {
+        "method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Sanitization method (clear/purge/destruct).",
+          "title": "Method"
+        },
+        "result": {
+          "$ref": "#/$defs/GateResult",
+          "default": "NOT_ASSESSED",
+          "description": "Sanitization result."
+        },
+        "standard": {
+          "default": "IEEE-2883-2022",
+          "description": "Sanitization standard applied.",
+          "title": "Standard",
+          "type": "string"
+        },
+        "verified": {
+          "default": false,
+          "description": "Whether sanitization was independently verified.",
+          "title": "Verified",
+          "type": "boolean"
+        }
+      },
+      "title": "Sanitization",
+      "type": "object"
+    },
+    "Signature": {
+      "additionalProperties": false,
+      "description": "ECDSA P-384 signature over the canonical (RFC 8785) bytes of the bundle.\n\nSelf-describing: it embeds the algorithm, canonicalization scheme, and the signer's\npublic key (SPKI DER, base64) so any party can check *cryptographic integrity*.\nBinding the public key to an *authorized* signer (operator/Voltry) is a separate\nplatform-registry concern, not a property of this object.",
+      "properties": {
+        "algorithm": {
+          "default": "ECDSA-P384-SHA384",
+          "description": "Signature algorithm identifier.",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "canonicalization": {
+          "default": "RFC8785",
+          "description": "Canonicalization scheme identifier.",
+          "title": "Canonicalization",
+          "type": "string"
+        },
+        "key_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Optional key identifier for rotation/lookup.",
+          "title": "Key Id"
+        },
+        "public_key_spki_b64": {
+          "description": "Signer public key, SubjectPublicKeyInfo DER, base64.",
+          "title": "Public Key Spki B64",
+          "type": "string"
+        },
+        "signature_b64": {
+          "description": "DER-encoded ECDSA signature, base64.",
+          "title": "Signature B64",
+          "type": "string"
+        },
+        "signed_at": {
+          "description": "When the bundle was signed (UTC).",
+          "format": "date-time",
+          "title": "Signed At",
+          "type": "string"
+        },
+        "signer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Signer role/label, e.g. 'operator' or 'voltry'.",
+          "title": "Signer"
+        }
+      },
+      "required": [
+        "public_key_spki_b64",
+        "signature_b64",
+        "signed_at"
+      ],
+      "title": "Signature",
+      "type": "object"
+    },
+    "SpareRows": {
+      "additionalProperties": false,
+      "description": "HBM row-remap headroom: the Hopper end-of-life gauge (first passage to the 512 cap).",
+      "properties": {
+        "cap": {
+          "default": 512,
+          "description": "Fixed spare-row cap (512 on Hopper).",
+          "minimum": 0,
+          "title": "Cap",
+          "type": "integer"
+        },
+        "correctable_remaps": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Remaps from correctable errors, if separable.",
+          "title": "Correctable Remaps"
+        },
+        "failure_occurred": {
+          "default": false,
+          "description": "Whether a row-remap failure was reported.",
+          "title": "Failure Occurred",
+          "type": "boolean"
+        },
+        "pending": {
+          "default": 0,
+          "description": "Pending remap operations.",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Pending",
+          "type": "integer"
+        },
+        "remaining": {
+          "description": "Spare rows remaining toward the fixed cap.",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Remaining",
+          "type": "integer"
+        },
+        "uncorrectable_remaps": {
+          "anyOf": [
+            {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Remaps from uncorrectable errors, if separable.",
+          "title": "Uncorrectable Remaps"
+        },
+        "used": {
+          "default": 0,
+          "description": "Spare rows consumed.",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Used",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "remaining"
+      ],
+      "title": "SpareRows",
+      "type": "object"
+    },
+    "StabilitySignals": {
+      "additionalProperties": false,
+      "description": "Throttle/clock/power stability flags (facts, not a score).",
+      "properties": {
+        "hw_slowdown_active": {
+          "default": false,
+          "description": "Hardware slowdown active.",
+          "title": "Hw Slowdown Active",
+          "type": "boolean"
+        },
+        "power_throttle_active": {
+          "default": false,
+          "description": "Power-cap throttling active.",
+          "title": "Power Throttle Active",
+          "type": "boolean"
+        },
+        "sw_throttle_active": {
+          "default": false,
+          "description": "Software power-scaling active.",
+          "title": "Sw Throttle Active",
+          "type": "boolean"
+        },
+        "sync_boost_active": {
+          "default": false,
+          "description": "Sync-boost throttling active.",
+          "title": "Sync Boost Active",
+          "type": "boolean"
+        },
+        "thermal_throttle_active": {
+          "default": false,
+          "description": "Thermal throttling active.",
+          "title": "Thermal Throttle Active",
+          "type": "boolean"
+        },
+        "throttle_reasons": {
+          "description": "Active throttle reasons (verbatim labels).",
+          "items": {
+            "type": "string"
+          },
+          "title": "Throttle Reasons",
+          "type": "array"
+        }
+      },
+      "title": "StabilitySignals",
+      "type": "object"
+    },
+    "Thermals": {
+      "additionalProperties": false,
+      "description": "Thermal snapshot (series captured in Monitor mode; wide for the thermal index).",
+      "properties": {
+        "gpu_temp_c": {
+          "anyOf": [
+            {
+              "maximum": 200,
+              "minimum": -50,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "GPU core temperature (\u00b0C).",
+          "title": "Gpu Temp C"
+        },
+        "hotspot_temp_c": {
+          "anyOf": [
+            {
+              "maximum": 200,
+              "minimum": -50,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Hotspot temperature (\u00b0C).",
+          "title": "Hotspot Temp C"
+        },
+        "max_operating_temp_c": {
+          "anyOf": [
+            {
+              "maximum": 200,
+              "minimum": -50,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Max operating temp (\u00b0C).",
+          "title": "Max Operating Temp C"
+        },
+        "memory_temp_c": {
+          "anyOf": [
+            {
+              "maximum": 200,
+              "minimum": -50,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "HBM/memory temperature (\u00b0C).",
+          "title": "Memory Temp C"
+        },
+        "throttle_temp_c": {
+          "anyOf": [
+            {
+              "maximum": 200,
+              "minimum": -50,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Throttle threshold (\u00b0C).",
+          "title": "Throttle Temp C"
+        }
+      },
+      "title": "Thermals",
+      "type": "object"
+    },
+    "Tier": {
+      "description": "Provenance/coverage tier. Maps to run mode: READ is roughly Bronze, a full\nfunctional pass Silver, continuous monitoring Gold.",
+      "enum": [
+        "BRONZE",
+        "SILVER",
+        "GOLD"
+      ],
+      "title": "Tier",
+      "type": "string"
+    },
+    "XidEvent": {
+      "additionalProperties": false,
+      "description": "A normalized Xid event (mapped to the one taxonomy before any pooling).",
+      "properties": {
+        "category": {
+          "description": "Normalized failure-taxonomy category for this Xid.",
+          "title": "Category",
+          "type": "string"
+        },
+        "count": {
+          "default": 1,
+          "description": "Occurrences of this Xid in the captured window.",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Count",
+          "type": "integer"
+        },
+        "critical": {
+          "default": false,
+          "description": "Whether this Xid is in the critical set.",
+          "title": "Critical",
+          "type": "boolean"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Human-readable Xid description.",
+          "title": "Description"
+        },
+        "first_seen": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "First observation (UTC).",
+          "title": "First Seen"
+        },
+        "last_seen": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Most recent observation (UTC).",
+          "title": "Last Seen"
+        },
+        "xid": {
+          "description": "Xid code.",
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Xid",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "xid",
+        "category"
+      ],
+      "title": "XidEvent",
+      "type": "object"
+    }
+  },
+  "$id": "https://voltry.dev/schema/evidence_bundle/1.2.1.json",
+  "additionalProperties": false,
+  "description": "The signed evidence bundle: source of truth, replay artifact, and ledger leaf.\n\nThe certificate is a *view* over this. It carries the measurement, the verbatim raw\nreads (replay substrate), and the provenance/methodology stamps, but no modeled\nestimate and no price.",
+  "properties": {
+    "agent": {
+      "$ref": "#/$defs/AgentInfo",
+      "description": "The probe build that produced the bundle."
+    },
+    "bundle_id": {
+      "description": "Unique id for this bundle/attempt.",
+      "format": "uuid",
+      "title": "Bundle Id",
+      "type": "string"
+    },
+    "calibration_snapshot_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Calibration snapshot id for modeled fields. None while no modeled fields are computed.",
+      "title": "Calibration Snapshot Id"
+    },
+    "created_at": {
+      "description": "When the bundle was assembled (UTC).",
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "environment": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/EnvironmentBlock"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Facility context from a data-center connector, if present."
+    },
+    "functional": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/FunctionalBlock"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Functional-mode results, if run."
+    },
+    "identity": {
+      "$ref": "#/$defs/IdentityBlock",
+      "description": "Permanent identity + authenticity evidence."
+    },
+    "measured": {
+      "$ref": "#/$defs/MeasuredBlock",
+      "description": "Measured facts (certificate block 2), wide."
+    },
+    "methodology_version_hash": {
+      "description": "Hash of the methodology version this bundle was captured under, stamped so a third party can replay the exact method.",
+      "title": "Methodology Version Hash",
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "#/$defs/ProvenanceBlock",
+      "description": "Provenance and coverage (certificate block 4)."
+    },
+    "raw_reads": {
+      "$ref": "#/$defs/RawReads",
+      "description": "Verbatim source payloads (the replay substrate)."
+    },
+    "schema_version": {
+      "default": "1.2.1",
+      "description": "Semver of the schema this bundle conforms to.",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "signature": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Signature"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "ECDSA P-384 signature over canonical bytes. None until signed."
+    }
+  },
+  "required": [
+    "created_at",
+    "agent",
+    "methodology_version_hash",
+    "identity",
+    "measured",
+    "raw_reads",
+    "provenance"
+  ],
+  "title": "Voltry Evidence Bundle",
+  "type": "object",
+  "x-schema-version": "1.2.1"
+}

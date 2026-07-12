@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+dist/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
