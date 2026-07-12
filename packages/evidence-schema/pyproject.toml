@@ -50,7 +50,7 @@ packages = ["evidence_schema"]
 
 # Keep internal working notes and local caches out of the sdist.
 [tool.hatch.build.targets.sdist]
-exclude = ["CLAUDE.md", "AGENTS.md", ".claude", ".hypothesis", ".pytest_cache", ".ruff_cache", ".coverage"]
+exclude = [".hypothesis", ".pytest_cache", ".ruff_cache", ".coverage"]
 
 # --- Local test + coverage config (pytest runs from this directory in CI) ---
 [tool.pytest.ini_options]

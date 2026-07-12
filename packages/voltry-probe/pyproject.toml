@@ -60,11 +60,11 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["voltry_probe"]
 
-# Keep repo-local working files and tool caches out of the published sdist.
+# Keep local tool caches out of the published sdist.
 # Hatchling always bundles a .gitignore into the sdist; this package carries its own
 # so the repo-root ignore file never ships in its place.
 [tool.hatch.build.targets.sdist]
-exclude = ["CLAUDE.md", "AGENTS.md", ".claude", ".hypothesis", ".pytest_cache", ".ruff_cache", ".coverage"]
+exclude = [".hypothesis", ".pytest_cache", ".ruff_cache", ".coverage"]
 
 # voltry-evidence-schema resolves from the workspace locally and from PyPI when published.
 [tool.uv.sources]
