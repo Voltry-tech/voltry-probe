@@ -883,7 +883,7 @@
         },
         "spare_rows": {
           "$ref": "#/$defs/SpareRows",
-          "description": "HBM spare-row headroom (end-of-life gauge)."
+          "description": "HBM row-remap accounting (InfoROM): remap margin toward the fixed cap."
         },
         "stability": {
           "$ref": "#/$defs/StabilitySignals",
@@ -1005,7 +1005,7 @@
         },
         "remapped": {
           "default": 0,
-          "description": "Remapped rows/pages (the wear signal toward the 512 cap).",
+          "description": "Remapped rows/pages reported by InfoROM, counted toward the cap.",
           "maximum": 9007199254740991,
           "minimum": 0,
           "title": "Remapped",
@@ -1417,7 +1417,7 @@
     },
     "SpareRows": {
       "additionalProperties": false,
-      "description": "HBM row-remap headroom: the Hopper end-of-life gauge (first passage to the 512 cap).",
+      "description": "HBM row-remap accounting from InfoROM: remaps counted toward the fixed cap (512 on\nHopper). This is the reported remap margin, not a direct count of physical spare rows;\nread alongside pending and failure_occurred, which can matter before the cap is reached.",
       "properties": {
         "cap": {
           "default": 512,
@@ -1456,7 +1456,7 @@
           "type": "integer"
         },
         "remaining": {
-          "description": "Spare rows remaining toward the fixed cap.",
+          "description": "Reported remap margin toward the fixed cap (cap minus used).",
           "maximum": 9007199254740991,
           "minimum": 0,
           "title": "Remaining",
@@ -1711,7 +1711,7 @@
       "type": "object"
     }
   },
-  "$id": "https://voltry.dev/schema/evidence_bundle/1.2.1.json",
+  "$id": "https://voltry.dev/schema/evidence_bundle/1.2.2.json",
   "additionalProperties": false,
   "description": "The signed evidence bundle: source of truth, replay artifact, and ledger leaf.\n\nThe certificate is a *view* over this. It carries the measurement, the verbatim raw\nreads (replay substrate), and the provenance/methodology stamps, but no modeled\nestimate and no price.",
   "properties": {
@@ -1790,7 +1790,7 @@
       "description": "Verbatim source payloads (the replay substrate)."
     },
     "schema_version": {
-      "default": "1.2.1",
+      "default": "1.2.2",
       "description": "Semver of the schema this bundle conforms to.",
       "title": "Schema Version",
       "type": "string"
@@ -1819,5 +1819,5 @@
   ],
   "title": "Voltry Evidence Bundle",
   "type": "object",
-  "x-schema-version": "1.2.1"
+  "x-schema-version": "1.2.2"
 }

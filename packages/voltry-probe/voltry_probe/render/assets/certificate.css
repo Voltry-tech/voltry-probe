@@ -97,6 +97,20 @@ body {
 .gauge {
   color: var(--luminous-wave);
 }
+/* Reported row-remap failure / pending states: high-visibility, styled at the row level
+   so they stand out from the fact rows and never read as a clean number. */
+.row--warn {
+  background: rgba(224, 49, 79, 0.14);
+  border: 1px solid var(--alert-bright);
+  border-radius: var(--radius-md);
+  padding: 4px 8px;
+  margin: 4px 0;
+}
+.row--warn .row__k,
+.row__v--warn {
+  color: var(--alert-bright);
+  font-weight: 600;
+}
 /* Modeled (estimates): DISTINCT from measured. Dashed, muted, banded; pending until the
    modeling engine ships. */
 .block--modeled {

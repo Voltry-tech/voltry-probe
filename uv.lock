@@ -982,7 +982,7 @@ wheels = [
 
 [[package]]
 name = "voltry-evidence-schema"
-version = "1.2.1"
+version = "1.2.2"
 source = { editable = "packages/evidence-schema" }
 dependencies = [
     { name = "cryptography" },
@@ -999,7 +999,7 @@ requires-dist = [
 
 [[package]]
 name = "voltry-probe"
-version = "0.3.1"
+version = "0.3.2"
 source = { editable = "packages/voltry-probe" }
 dependencies = [
     { name = "cryptography" },

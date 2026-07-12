@@ -102,3 +102,26 @@ def test_raw_canonicalize_rejects_out_of_domain_number():
     # the RFC 8785 domain, exactly like the model path.
     with pytest.raises(CanonicalizationError):
         canonical_bytes_from_payload({"x": 2**60})
+
+
+def test_sign_bundle_rejects_non_p384_key():
+    # A producer must not be able to emit a bundle that fails its own verifier: signing
+    # with any curve other than P-384 raises before an artifact exists.
+    from cryptography.hazmat.primitives.asymmetric import ec
+
+    from evidence_schema import sign_bundle
+    from evidence_schema.samples import worked_example_a_bundle
+
+    for curve in (ec.SECP256R1(), ec.SECP521R1()):
+        with pytest.raises(ValueError, match="P-384|secp384r1|SECP384R1"):
+            sign_bundle(worked_example_a_bundle(), ec.generate_private_key(curve))
+
+
+def test_load_public_key_rejects_non_p384():
+    from cryptography.hazmat.primitives.asymmetric import ec
+
+    from evidence_schema.sign import load_public_key_spki_b64, public_key_to_spki_b64
+
+    p256_pub = ec.generate_private_key(ec.SECP256R1()).public_key()
+    with pytest.raises(ValueError, match="P-384|secp384r1|SECP384R1"):
+        load_public_key_spki_b64(public_key_to_spki_b64(p256_pub))

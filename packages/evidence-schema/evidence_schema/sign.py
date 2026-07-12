@@ -51,12 +51,17 @@ def public_key_to_spki_b64(public_key: ec.EllipticCurvePublicKey) -> str:
 def load_public_key_spki_b64(spki_b64: str) -> ec.EllipticCurvePublicKey:
     """Load a public key from base64-encoded SubjectPublicKeyInfo DER.
 
-    Raises ``ValueError`` if the material is malformed or is not an EC public key.
+    Raises ``ValueError`` if the material is malformed, is not an EC public key, or is
+    not on P-384. The whole contract is P-384 (the signature algorithm field declares
+    it), so a key on any other curve is rejected here rather than being loaded and
+    silently used to verify a differently-curved signature that claims to be P-384.
     """
     der = base64.b64decode(spki_b64, validate=True)
     key = serialization.load_der_public_key(der)
     if not isinstance(key, ec.EllipticCurvePublicKey):
         raise ValueError("public key is not an elliptic-curve key")
+    if not isinstance(key.curve, _CURVE):
+        raise ValueError(f"public key must be on {_CURVE.name}, got {key.curve.name}")
     return key
 
 
@@ -70,8 +75,17 @@ def sign_bundle(
 ) -> EvidenceBundle:
     """Return a copy of ``bundle`` with a valid :class:`Signature` attached.
 
-    The original bundle is not mutated. Signing is over ``canonical_bytes`` only.
+    The original bundle is not mutated. Signing is over ``canonical_bytes`` only. Raises
+    ``ValueError`` if ``private_key`` is not on P-384: the signature would declare
+    ``ECDSA-P384`` while carrying a different-curve signature, and the verifier rejects
+    that mismatch, so a non-P-384 key would only ever produce a bundle that fails its
+    own verification. Refuse before emitting the artifact.
     """
+    if not isinstance(private_key.curve, _CURVE):
+        raise ValueError(
+            f"signing key must be on {_CURVE.name}, got {private_key.curve.name}; "
+            "the bundle signature algorithm is fixed to ECDSA P-384"
+        )
     payload = canonical_bytes(bundle)
     der_signature = private_key.sign(payload, ec.ECDSA(_HASH()))
     signature = Signature(

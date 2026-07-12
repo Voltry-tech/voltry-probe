@@ -35,7 +35,7 @@ FIXTURE_1_1 = Path(__file__).parent / "fixtures" / "bundle_v1_1_0_signed.json"
 
 
 def test_schema_version_is_1_2_1():
-    assert SCHEMA_VERSION == "1.2.1"
+    assert SCHEMA_VERSION == "1.2.2"
 
 
 def test_v1_0_0_bundle_verifies_from_raw_json():

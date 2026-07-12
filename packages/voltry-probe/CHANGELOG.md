@@ -3,6 +3,33 @@
 All notable changes to `voltry-probe` are documented here, newest first, one
 dated entry per release.
 
+## [0.3.2] - 2026-07-12
+
+Security and honesty patch, backward compatible. No wire-format change. Depends on
+evidence-schema >= 1.2.2 for the curve enforcement below.
+
+- P-384 is enforced at every producer boundary, closing the re-audit N-02 finding. The
+  CLI signing-key and trusted-root loaders reject any key not on secp384r1, and the
+  attestation verifier refuses a non-P-384 device key (via the schema loader) or trusted
+  root. Previously the CLI could sign with a P-256 key, emitting a bundle that failed its
+  own verifier, and the attestation path accepted P-256 keys.
+- The certificate no longer presents a bare "spare rows remaining" headroom number. It
+  shows the InfoROM remap margin as used-against-cap, splits correctable from
+  uncorrectable remaps, and renders row-remap failure and pending states as prominent
+  rows that lead the group so a failure cannot hide under a clean-looking margin
+  (re-audit N-04).
+- Public-facing wording corrected (re-audit N-05/N-06): dropped "safe on a live
+  production fleet" for a scoped non-mutating-reads statement with a validate-before-
+  rollout note; scoped the append-only/cherry-picking claim to the platform registry
+  rather than this standalone package; replaced "collects no personal data" with an
+  accurate note that device identifiers (serial, GPU UUID) are collected and are
+  linkable while no account identity is; removed the Dockerfile claim that the image is
+  cosign-signed and Trivy-scanned in CI, which no public workflow runs; and replaced
+  "verbatim/byte-exact" raw-reads language with "normalized JSON snapshot with an
+  integrity hash over the canonical bytes."
+- The default methodology identifier is now a content hash of the read-mode methodology
+  rather than a bare "read-v0" label, so methodology_version_hash carries an actual hash.
+
 ## [0.3.1] - 2026-07-11
 
 Public-repository polish release. No wire-format changes; the behavior

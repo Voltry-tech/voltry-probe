@@ -39,7 +39,7 @@ from .types import SAFE_INTEGER_MAX, Count, UtcDateTime
 from .version import CANONICALIZATION_SCHEME, SCHEMA_VERSION, SIGNATURE_ALGORITHM
 
 # Maximum spare rows on Hopper HBM: a fixed threshold that does not scale with
-# capacity, which is why spare-rows-remaining works as the end-of-life gauge.
+# capacity, so the remap margin toward that cap is the primary wear signal to read.
 SPARE_ROW_CAP: int = 512
 
 
@@ -250,15 +250,19 @@ class PageRetirement(_Strict):
     retired_dbe: Count = Field(default=0, description="Pages retired due to double-bit errors.")
     pending_retirement: Count = Field(default=0, description="Pages pending retirement.")
     remapped: Count = Field(
-        default=0, description="Remapped rows/pages (the wear signal toward the 512 cap)."
+        default=0, description="Remapped rows/pages reported by InfoROM, counted toward the cap."
     )
 
 
 class SpareRows(_Strict):
-    """HBM row-remap headroom: the Hopper end-of-life gauge (first passage to the 512 cap)."""
+    """HBM row-remap accounting from InfoROM: remaps counted toward the fixed cap (512 on
+    Hopper). This is the reported remap margin, not a direct count of physical spare rows;
+    read alongside pending and failure_occurred, which can matter before the cap is reached."""
 
     used: Count = Field(default=0, description="Spare rows consumed.")
-    remaining: Count = Field(description="Spare rows remaining toward the fixed cap.")
+    remaining: Count = Field(
+        description="Reported remap margin toward the fixed cap (cap minus used)."
+    )
     cap: int = Field(
         default=SPARE_ROW_CAP, ge=0, description="Fixed spare-row cap (512 on Hopper)."
     )
@@ -409,7 +413,9 @@ class MeasuredBlock(_Strict):
     pages: PageRetirement = Field(
         default_factory=PageRetirement, description="Retired/remapped page accounting."
     )
-    spare_rows: SpareRows = Field(description="HBM spare-row headroom (end-of-life gauge).")
+    spare_rows: SpareRows = Field(
+        description="HBM row-remap accounting (InfoROM): remap margin toward the fixed cap."
+    )
     stability: StabilitySignals = Field(
         default_factory=StabilitySignals, description="Throttle/stability flags."
     )

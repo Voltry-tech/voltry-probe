@@ -3,7 +3,7 @@
 Pure function of its input dict, so it is read-only by construction. The expected
 payload shape mirrors what the read-only ``nvmlDeviceGet*`` getters return (see
 ``sources/live.py``). Spare-rows remaining is derived from remapped rows against the
-fixed 512 cap: the Hopper end-of-life gauge.
+fixed 512 cap, the primary Hopper wear signal.
 
 The one rule this module enforces (in ``_require``): a counter the certificate shows
 as a measured fact must actually be present in the payload. A live capture always
@@ -25,7 +25,7 @@ from evidence_schema import (
     XidEvent,
 )
 from evidence_schema.models import SPARE_ROW_CAP
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, JsonValue
 
 from ._util import _d
 from .taxonomy import normalize_xid
@@ -88,7 +88,7 @@ class NvmlReadout(BaseModel):
     nvlink: NvLinkStatus | None
     pcie: PcieStatus | None
     # Landing-zone facts (e.g. ecc_mode) and observed library versions.
-    extensions: dict[str, bool | int | str]
+    extensions: dict[str, JsonValue]
     driver_version: str | None
     nvml_version: str | None
     cuda_version: str | None
@@ -203,7 +203,7 @@ def map_nvml(nvml: dict) -> NvmlReadout:
         if isinstance(pcie_raw, dict)
         else None
     )
-    extensions: dict[str, bool | int | str] = {}
+    extensions: dict[str, JsonValue] = {}
     if "xid" in nvml:
         # An Xid event source was actually read (fixture, log reader, DCGM watch).
         # Without this stamp the renderer must show "not read", never a clean zero.

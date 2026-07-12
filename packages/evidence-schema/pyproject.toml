@@ -2,7 +2,7 @@
 # Distribution name is namespaced for PyPI (ADR-0003); the import name stays
 # `evidence_schema` so no consumer code changes.
 name = "voltry-evidence-schema"
-version = "1.2.1"
+version = "1.2.2"
 description = "Signed GPU evidence bundle schema: canonical JSON (RFC 8785) with ECDSA P-384 signatures"
 requires-python = ">=3.10"
 license = "Apache-2.0"

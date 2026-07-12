@@ -178,6 +178,19 @@ def verify_attestation(
             measured_at=when,
             challenge=operator_challenge,
         )
+    if not isinstance(trusted_root_public_key.curve, ec.SECP384R1):
+        # A non-P-384 root can only make/verify non-P-384 signatures; accepting one would
+        # let a weaker-curve chain pass as the declared P-384 attestation. The CLI already
+        # rejects such a root; this guards the library entry point too. Not evaluable, so
+        # UNVERIFIED (a caller misconfiguration, not a failed attestation).
+        return _unverified(
+            report.scheme,
+            f"Trusted root is on {trusted_root_public_key.curve.name}, not P-384; "
+            "attestation chain not evaluated.",
+            root_reachability=False,
+            measured_at=when,
+            challenge=operator_challenge,
+        )
 
     # 1) Chain: the root must have signed the device-key binding.
     root_ok = _ecdsa_ok(

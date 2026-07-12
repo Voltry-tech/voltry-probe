@@ -10,9 +10,10 @@
 #     --platform linux/amd64,linux/arm64 \
 #     -t ghcr.io/voltry/voltry-probe:0.3.1 .
 #
-# Collects no personal data: bundles carry device identifiers (serial, GPU UUID);
-# account linkage happens server-side. No secrets are baked in (no keys/.env copied;
-# see .dockerignore). Image is signed (cosign) and CVE-scanned (Trivy) in CI.
+# Collects device identifiers (serial, GPU UUID); it does not collect any account or
+# user identity (account linkage happens server-side). No secrets are baked in (no
+# keys/.env copied; see .dockerignore). Image signing and CVE scanning are a roadmap
+# item, not currently run in the public CI workflow.
 ARG CUDA_TAG=12.6.2-base-ubuntu22.04
 FROM nvcr.io/nvidia/cuda:${CUDA_TAG}
 
@@ -33,8 +34,8 @@ COPY packages/evidence-schema /opt/voltry/evidence-schema
 COPY packages/voltry-probe    /opt/voltry/voltry-probe
 RUN uv pip install --system --python python3.12 ./evidence-schema ./voltry-probe
 
-# Run unprivileged; scan reads device state without mutating it and collects no
-# personal data.
+# Run unprivileged; scan reads device state without mutating it. It collects device
+# identifiers (serial, GPU UUID), not any account or user identity.
 RUN useradd --create-home --uid 10001 voltry
 USER voltry
 WORKDIR /home/voltry

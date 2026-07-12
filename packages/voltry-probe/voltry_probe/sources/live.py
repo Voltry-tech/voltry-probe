@@ -531,6 +531,8 @@ class LiveSource:
                 continue
             active += 1
             for kind, bucket in kinds:
+                if counter_fn is None:  # pragma: no cover - kinds is empty without it
+                    continue
                 try:
                     count = counter_fn(handle, link, kind)
                 except pynvml.NVMLError:

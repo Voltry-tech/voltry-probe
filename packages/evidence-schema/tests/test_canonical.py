@@ -50,7 +50,9 @@ from evidence_schema.samples import worked_example_a_bundle
 # became challenge=None / freshness NOT_ASSESSED (the old sample claimed a freshness
 # PASS that its placeholder report could never substantiate). Content change only;
 # the canonicalization rules are still untouched.
-GOLDEN_SHA256 = "b36f887df2dc56ad7ec7eca99146ce6f073d5781f8a48a2a6bb561f4af96bbd1"
+# Updated at 1.2.2: only the embedded schema_version string moved (1.2.1 -> 1.2.2);
+# the canonicalization rules are unchanged and all prior signed bundles still verify.
+GOLDEN_SHA256 = "a85c6e4a33b03075f97b305bf2d4a0046730810d6feedbb14dc3efa474f5c766"
 
 # --- hypothesis strategy: varied but always-valid bundles (this file is the only user) ---
 _safe_text = st.text(alphabet=st.characters(blacklist_categories=("Cs",)), max_size=24)
@@ -152,7 +154,7 @@ def test_canonical_compact_and_sorted(sample_bundle):
     # Real bundle: top-level keys sorted, so 'agent' first, 'schema_version' last.
     raw = canonical_bytes(sample_bundle)
     assert raw.startswith(b'{"agent":')
-    assert raw.rstrip().endswith(b'"schema_version":"1.2.1"}')
+    assert raw.rstrip().endswith(b'"schema_version":"1.2.2"}')
     # canonical_json is the UTF-8 decode of the same bytes.
     assert canonical_json(sample_bundle) == raw.decode("utf-8")
 

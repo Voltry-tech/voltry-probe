@@ -29,7 +29,7 @@ are frozen in ``docs/adr/0002-evidence-schema-freeze.md``.
 from __future__ import annotations
 
 #: The frozen schema version. Bump per the policy in this module's docstring.
-SCHEMA_VERSION: str = "1.2.1"
+SCHEMA_VERSION: str = "1.2.2"
 
 #: The canonicalization scheme identifier embedded in every signature. Changing this
 #: string is a MAJOR change (it alters the signable bytes for all bundles).

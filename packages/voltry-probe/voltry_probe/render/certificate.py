@@ -21,7 +21,14 @@ from __future__ import annotations
 import html
 from importlib import resources
 
-from evidence_schema import AttestationVerdict, DutyBlock, EvidenceBundle, GateResult, History
+from evidence_schema import (
+    AttestationVerdict,
+    DutyBlock,
+    EvidenceBundle,
+    GateResult,
+    History,
+    MeasuredBlock,
+)
 
 _GLYPH = {GateResult.PASS: "PASS", GateResult.FAIL: "FAIL", GateResult.NOT_ASSESSED: "-"}
 _GATE_CLASS = {
@@ -52,6 +59,16 @@ def _row(key: str, value: str, value_class: str = "") -> str:
     )
 
 
+def _warn_row(key: str, value: str) -> str:
+    """A high-visibility row for reported failure / pending states. Styled at the row
+    level (``row--warn``), not just the value, so it stands out from the fact rows and
+    cannot be read as a clean number."""
+    return (
+        f'<div class="row row--warn"><span class="row__k">{_esc(key)}</span>'
+        f'<span class="row__v row__v--warn">{_esc(value)}</span></div>'
+    )
+
+
 def _gate_row(key: str, result: GateResult) -> str:
     return _row(key, _GLYPH[result], _GATE_CLASS[result])
 
@@ -74,14 +91,44 @@ def _block_gates(bundle: EvidenceBundle) -> str:
     return _section("block--measured", "1 · Deterministic gates (measured)", rows)
 
 
+def _remap_rows(measured: MeasuredBlock) -> str:
+    """Row-remap accounting from InfoROM.
+
+    The margin is reported as an InfoROM-derived count of consumed remaps against the
+    fixed cap (used / cap), not as literal physical spare-row headroom: NVIDIA documents
+    these as InfoROM remap counters, not a direct count of surviving physical rows.
+    Correctable and uncorrectable remaps are shown separately (collapsing them into one
+    number invites an unwarranted read), and any reported failure or pending state
+    surfaces as a high-visibility row regardless of how clean the margin looks."""
+    sr = measured.spare_rows
+    rows = ""
+    # Reported failure and pending states lead, so they cannot be lost under a clean margin.
+    if sr.failure_occurred:
+        rows += _warn_row("Row-remap failure", "REPORTED (InfoROM failureOccurred)")
+    if sr.pending > 0:
+        rows += _warn_row("Row remap pending", str(sr.pending))
+    rows += _row("Row-remap margin (InfoROM)", f"{sr.used} used / {sr.cap} cap", "gauge")
+
+    def _split(v: int | None) -> str:
+        return "not separable" if v is None else str(v)
+
+    rows += _row("  remaps, correctable", _split(sr.correctable_remaps))
+    rows += _row("  remaps, uncorrectable", _split(sr.uncorrectable_remaps))
+    return rows
+
+
 def _block_measured(bundle: EvidenceBundle) -> str:
     m = bundle.measured
-    sr = m.spare_rows
     xid_critical = sum(e.count for e in m.xid if e.critical)
     stable = not (
         m.stability.thermal_throttle_active
         or m.stability.power_throttle_active
         or m.stability.hw_slowdown_active
+    )
+    pages_pending = (
+        _warn_row("Pages pending retirement", str(m.pages.pending_retirement))
+        if m.pages.pending_retirement > 0
+        else ""
     )
     rows = (
         _row("Uncorrectable ECC events", str(m.ecc.aggregate_uncorrectable))
@@ -93,7 +140,8 @@ def _block_measured(bundle: EvidenceBundle) -> str:
         + _row(
             "Retired / remapped pages", f"{m.pages.retired} retired / {m.pages.remapped} remapped"
         )
-        + _row("Spare rows remaining", f"{sr.remaining} / {sr.cap}", "gauge")
+        + pages_pending
+        + _remap_rows(m)
         + _row(
             "Throttle / clock / power", "stable, within spec" if stable else "throttling observed"
         )

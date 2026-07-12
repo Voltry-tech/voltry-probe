@@ -1,7 +1,8 @@
 # Contributing to voltry-probe
 
-Thanks for looking at the probe. This is the open, read-only agent: PyPI
-`voltry-probe`, import `voltry_probe`, CLI `voltry`.
+Thanks for looking at the probe. This is voltry-probe: a GPU evidence capture,
+signing, and offline certificate rendering toolkit. PyPI `voltry-probe`, import
+`voltry_probe`, CLI `voltry`.
 
 ## Dev setup
 

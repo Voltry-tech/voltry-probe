@@ -40,6 +40,9 @@ def run(out: TextIO = sys.stdout) -> bool:
     private_key = generate_keypair()
     signed = sign_bundle(bundle, private_key, signer="operator")
     sig = signed.signature
+    if sig is None:  # pragma: no cover - sign_bundle always attaches a signature
+        line("UNEXPECTED: sign_bundle produced no signature")
+        return False
     line(f"\nsigned         : algorithm={sig.algorithm} canon={sig.canonicalization}")
 
     ok = verify_bundle(signed)

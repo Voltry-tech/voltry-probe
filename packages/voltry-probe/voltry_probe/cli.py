@@ -9,12 +9,13 @@ Three commands:
   an optional dependency so scan and cert stay offline and dependency-light.
 
 Scan and cert make no network requests. Bundles carry device identifiers (serial, GPU
-UUID) and no personal data: identity is device-level; account linkage happens
-server-side.
+UUID), which are persistent and can be linkable; no account or user identity is
+collected here (account linkage, if any, happens server-side).
 """
 
 from __future__ import annotations
 
+import hashlib
 import platform
 import sys
 from pathlib import Path
@@ -44,6 +45,19 @@ app = typer.Typer(
         "Voltry Probe: GPU condition and provenance evidence. scan and cert are offline "
         "and never mutate the device; submit is opt-in."
     ),
+)
+
+# The read-mode methodology this version implements, as a frozen descriptor. The default
+# stamped into the bundle is a content hash of it, so methodology_version_hash carries an
+# actual hash that pins a specific procedure rather than a bare "read-v0" label. Change the
+# descriptor when the read procedure changes and the hash moves with it.
+_READ_METHODOLOGY = (
+    "voltry-probe read mode v0: non-mutating NVML identity and health-counter capture; "
+    "RFC 8785 canonical evidence bundle; ECDSA P-384 signature; attestation verified "
+    "against a supplied trusted root when provided."
+)
+DEFAULT_METHODOLOGY = (
+    "read-v0.sha256-" + hashlib.sha256(_READ_METHODOLOGY.encode()).hexdigest()[:16]
 )
 
 
@@ -86,6 +100,11 @@ def _load_signing_key(signing_key: Path | None, ephemeral: bool) -> ec.EllipticC
             ) from exc
         if not isinstance(key, ec.EllipticCurvePrivateKey):
             raise typer.BadParameter("signing key must be an EC (P-384) private key")
+        if not isinstance(key.curve, ec.SECP384R1):
+            raise typer.BadParameter(
+                f"signing key must be on P-384 (secp384r1), got {key.curve.name}; "
+                "a bundle signed with any other curve fails its own verifier"
+            )
         return key
     if ephemeral:
         typer.echo(
@@ -113,6 +132,11 @@ def _load_root_pubkey(path: Path | None) -> ec.EllipticCurvePublicKey | None:
         ) from exc
     if not isinstance(key, ec.EllipticCurvePublicKey):
         raise typer.BadParameter("trusted root must be an EC public key")
+    if not isinstance(key.curve, ec.SECP384R1):
+        raise typer.BadParameter(
+            f"trusted root must be on P-384 (secp384r1), got {key.curve.name}; "
+            "the attestation chain verifies P-384 signatures only"
+        )
     return key
 
 
@@ -125,7 +149,11 @@ def scan(
         None, "--out", "-o", help="Write the signed bundle JSON here (default: stdout)."
     ),
     methodology: str = typer.Option(
-        "read-v0", help="Methodology version hash stamped into the bundle."
+        DEFAULT_METHODOLOGY,
+        help=(
+            "Methodology identifier stamped into the bundle. The default is a content "
+            "hash of this version's read-mode methodology; pass your own to pin a method."
+        ),
     ),
     signing_key: Path = typer.Option(
         None, help="Operator EC P-384 private key (PEM) to sign the bundle."

@@ -30,7 +30,39 @@ jobs:
         run: |
           uv run ruff check .
           uv run black --check .
-      - name: evidence-schema tests
-        run: uv run --package voltry-evidence-schema pytest packages/evidence-schema -q
-      - name: voltry-probe tests
-        run: uv run --package voltry-probe pytest packages/voltry-probe -q
+      - name: Tests
+        run: |
+          uv run --package voltry-evidence-schema pytest packages/evidence-schema -q
+          uv run --package voltry-probe pytest packages/voltry-probe -q
+
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
+        with:
+          enable-cache: true
+      - name: Sync workspace
+        run: uv sync --all-packages --dev --locked
+      - name: Type check
+        run: uv run --with mypy mypy packages/evidence-schema/evidence_schema packages/voltry-probe/voltry_probe --ignore-missing-imports
+      - name: Branch coverage floor (>=95%)
+        run: |
+          uv run --with pytest-cov pytest packages/evidence-schema packages/voltry-probe \
+            --cov=voltry_probe --cov=evidence_schema --cov-branch --cov-fail-under=95 -q
+      - name: Build wheels and sdists
+        run: |
+          uv build --package voltry-probe -o dist
+          uv build --package voltry-evidence-schema -o dist
+      - name: Artifact metadata check
+        run: uv run --with twine twine check dist/*
+      - name: Clean-wheel smoke test
+        run: |
+          uv venv --seed .smoke
+          uv pip install --python .smoke/bin/python --find-links dist voltry-probe voltry-evidence-schema
+          .smoke/bin/voltry --version
+          .smoke/bin/voltry scan --fixture packages/voltry-probe/tests/fixtures/h100_read.json \
+            --ephemeral-key --out /tmp/bundle.json
+          .smoke/bin/voltry cert /tmp/bundle.json --out /tmp/cert.html
+      - name: Dependency audit
+        run: uv run --with pip-audit pip-audit --skip-editable

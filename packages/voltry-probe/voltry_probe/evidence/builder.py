@@ -30,7 +30,10 @@ from ..sources.base import RawCapture
 
 
 def _raw_payload(source: str, key: str, payload: object, captured_at: UtcDateTime) -> RawPayload:
-    """Wrap a verbatim source payload as a RawPayload with an integrity hash."""
+    """Wrap parsed source reads as a RawPayload: a normalized JSON snapshot with
+    canonical key order and an integrity hash over those canonical bytes. This is
+    not the source's original byte stream (for live NVML there is no original byte
+    stream to preserve)."""
     content = json.dumps(payload, sort_keys=True, ensure_ascii=False)  # not the signing path
     return RawPayload(
         source=source,

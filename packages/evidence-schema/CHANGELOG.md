@@ -4,6 +4,22 @@ All notable changes to `voltry-evidence-schema` are documented here, newest
 first, one dated entry per release. Versioning is semantic, and the
 distribution version is the schema version.
 
+## [1.2.2] - 2026-07-12
+
+Security patch, backward compatible. No wire-format or canonicalization change; the
+embedded schema version string moves to 1.2.2 and bundles signed under any 1.x still
+verify unchanged via the raw-bytes path.
+
+- P-384 is now enforced when producing and loading keys, not only when verifying. Signing
+  with a non-P-384 key raised nothing before and produced a bundle that failed its own
+  verifier; `sign_bundle` now rejects any private key that is not on secp384r1, and
+  `load_public_key_spki_b64` rejects any public key that is not on P-384 (so the verify
+  and attestation paths that use it reject mismatched-curve keys at load time). Closes the
+  re-audit N-02 finding.
+- Softened two field descriptions that overstated hardware certainty: the row-remap counts
+  are described as InfoROM-reported remaps counted toward the fixed cap, not a direct count
+  of physical spare rows, and read alongside pending and failure state (re-audit N-04).
+
 ## [1.2.1] - 2026-07-11
 
 Patch release: documentation and code-only fixes. No schema field was added,

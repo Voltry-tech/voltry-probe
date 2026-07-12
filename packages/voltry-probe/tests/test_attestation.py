@@ -307,3 +307,68 @@ def test_valid_root_sig_over_malformed_device_key_fails(root_key):
     out = verify_attestation(report, trusted_root_public_key=root_key.public_key())
     assert out.attestation.verdict is AttestationVerdict.FAILED
     assert out.authenticity_gate is GateResult.FAIL
+
+
+def _curve_report(root, dev, scheme, root_key, device_key):
+    # Local report builder allowing an arbitrary-curve device key, for curve-enforcement tests.
+    import base64
+
+    import rfc8785
+    from cryptography.hazmat.primitives import hashes
+    from cryptography.hazmat.primitives.asymmetric import ec
+    from evidence_schema.sign import public_key_to_spki_b64
+
+    from voltry_probe.attestation.model import AttestationReport
+
+    dev_id, vbios, nonce = "aa" * 32, "bb" * 32, "challenge-1234567890abcd"
+
+    def _s(k, payload):
+        return base64.b64encode(k.sign(payload, ec.ECDSA(hashes.SHA384()))).decode()
+
+    dev_pub = public_key_to_spki_b64(device_key.public_key())
+    root_stmt = rfc8785.dumps({"device_id": dev_id, "device_public_key_b64": dev_pub})
+    meas = rfc8785.dumps({"nonce": nonce, "vbios_hash": vbios})
+    return AttestationReport.model_validate(
+        {
+            "scheme": scheme,
+            "device_id": dev_id,
+            "device_public_key_b64": dev_pub,
+            "root_signature_b64": _s(root_key, root_stmt),
+            "vbios_hash": vbios,
+            "nonce": nonce,
+            "measurement_signature_b64": _s(device_key, meas),
+        }
+    )
+
+
+def test_p256_device_key_is_refused():
+    # A report whose device key is not P-384 must not verify, even with valid signatures.
+    from cryptography.hazmat.primitives.asymmetric import ec
+    from evidence_schema import AttestationVerdict, GateResult, generate_keypair
+
+    from voltry_probe.attestation.verify import verify_attestation
+
+    root = generate_keypair()
+    p256_dev = ec.generate_private_key(ec.SECP256R1())
+    out = verify_attestation(
+        _curve_report(root, p256_dev, "HARDWARE_ROOT", root, p256_dev),
+        trusted_root_public_key=root.public_key(),
+    )
+    assert out.authenticity_gate is GateResult.FAIL
+    assert out.attestation.verdict is AttestationVerdict.FAILED
+
+
+def test_non_p384_trusted_root_is_not_evaluated():
+    from cryptography.hazmat.primitives.asymmetric import ec
+    from evidence_schema import AttestationVerdict, GateResult, generate_keypair
+
+    from voltry_probe.attestation.verify import verify_attestation
+
+    dev = generate_keypair()
+    p256_root = ec.generate_private_key(ec.SECP256R1())
+    out = verify_attestation(
+        _curve_report(p256_root, dev, "HARDWARE_ROOT", p256_root, dev),
+        trusted_root_public_key=p256_root.public_key(),
+    )
+    assert out.attestation.verdict is AttestationVerdict.UNVERIFIED
+    assert out.authenticity_gate is GateResult.NOT_ASSESSED

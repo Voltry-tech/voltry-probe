@@ -69,8 +69,61 @@ def test_worked_example_a_facts_present():
     html = _html()
     assert "H100-SXM5" in html
     assert "SILVER" in html  # the sample bundle carries tier=SILVER
-    assert "509 / 512" in html  # the spare-row end-of-life gauge
+    # The row-remap margin reads as InfoROM remaps consumed against the cap (used/cap),
+    # not as literal physical spare-row headroom.
+    assert "Row-remap margin (InfoROM)" in html
+    assert "3 used / 512 cap" in html  # sample carries used=3, cap=512
     assert "Authenticity" in html and "PASS" in html
+
+
+def test_remap_margin_is_not_labeled_as_physical_headroom():
+    # N-04: the old "Spare rows remaining" label overstated physical headroom. The row
+    # now reads as an InfoROM remap margin (used against the cap), never bare "remaining".
+    html = _html()
+    assert "Spare rows remaining" not in html
+    assert "Row-remap margin (InfoROM)" in html
+
+
+def test_remap_correctable_uncorrectable_shown_separately():
+    # Combining correctable + uncorrectable remaps into one number invites an
+    # unwarranted read; the split is rendered rather than collapsed.
+    html = _html()
+    assert "remaps, correctable" in html
+    assert "remaps, uncorrectable" in html
+
+
+def test_remap_failure_renders_prominent_warning_row():
+    # A reported row-remap failure must surface as a high-visibility row regardless of
+    # how clean the margin looks (used=0 here would otherwise read as pristine).
+    bundle = worked_example_a_bundle()
+    bundle.measured.spare_rows.failure_occurred = True
+    html = render_certificate(bundle, verified=False)
+    assert 'class="row row--warn"' in html
+    assert "Row-remap failure" in html
+    assert "REPORTED" in html
+
+
+def test_remap_pending_renders_pending_row():
+    bundle = worked_example_a_bundle()
+    bundle.measured.spare_rows.pending = 2
+    html = render_certificate(bundle, verified=False)
+    assert 'class="row row--warn"' in html
+    assert "Row remap pending" in html
+
+
+def test_pages_pending_retirement_renders_pending_row():
+    bundle = worked_example_a_bundle()
+    bundle.measured.pages.pending_retirement = 4
+    html = render_certificate(bundle, verified=False)
+    assert 'class="row row--warn"' in html
+    assert "Pages pending retirement" in html
+
+
+def test_clean_bundle_has_no_warning_row():
+    # The worked example reports no failure and nothing pending: no warn row is
+    # emitted (the CSS rule is always inlined, so check the rendered class attribute).
+    html = _html()
+    assert 'class="row row--warn"' not in html
 
 
 def test_measured_and_modeled_visually_distinct():

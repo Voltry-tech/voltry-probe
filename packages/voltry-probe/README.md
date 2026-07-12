@@ -2,8 +2,9 @@
 
 Voltry Probe captures, signs, and renders condition and provenance evidence
 for data-center GPUs. `voltry scan` reads device state over NVML, read-only:
-no resets, no reconfiguration, no stress tests, so it is safe on a live
-production fleet. The readings are signed into an evidence bundle, and
+the scan path issues only non-mutating reads (no resets, reconfiguration, or
+stress); validate against your own driver and GPU models before fleet-wide
+rollout. The readings are signed into an evidence bundle, and
 `voltry cert` renders that bundle into a self-contained HTML certificate you
 can open with no network at all.
 
@@ -99,9 +100,10 @@ that never look alike:
 - Measured condition: ECC and Xid history, retired and remapped pages, spare
   rows remaining, throttle and clock behavior. Raw values against published
   thresholds.
-- Provenance: certification history on the device's permanent identity,
-  append-only. A failed attempt stays on the record; cherry-picking is
-  structurally impossible.
+- Provenance: certification history on the device's permanent identity. The
+  platform registry may enforce append-only history so failed attempts cannot
+  be hidden; this package alone signs individual bundles and does not provide
+  that ledger.
 
 It never contains a price, a dollar figure, or a lifetime guarantee. Power-chain
 exposure reads "Not Assessed" unless the facility itself was instrumented; it
