@@ -1,0 +1,29 @@
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+
+A point-in-time hardware observation report for this Mac. Point-in-time
+observations, not a diagnosis, grade or certificate.
+
+options:
+  -h, --help           show this help message and exit
+  --version            print the version and exit
+  --dry-run            print every command this version can run, and run none
+  --no-root            skip the two administrator reads
+  --yes                skip Voltry's own question; with no terminal, sudo cannot
+                       ask
+  --output DIR         save the report in DIR, an existing folder, instead of
+                       the Desktop
+  --json               also save the report's JSON beside the PDF
+  --no-open            do not open the PDF
+  --show-serial        show the full serial number instead of its last four
+                       characters
+  --paper {letter,a4}  paper size; by default, from your region
+  --debug              print each command's ID, template, exit code and duration
+                       to stderr
+
+--yes skips Voltry's own question only. With a terminal, sudo may still ask for
+your password; without one, sudo cannot ask.
+--yes and --no-root contradict each other and are refused (exit 2).

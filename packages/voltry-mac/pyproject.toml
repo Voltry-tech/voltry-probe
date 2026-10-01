@@ -1,0 +1,59 @@
+[project]
+name = "voltry-mac"
+version = "0.1.0"
+description = "A point-in-time hardware observation report for Apple silicon Macs, made on the owner's own Mac. It reads as the logged-in user; two optional administrator reads run inside a no-write sandbox."
+requires-python = ">=3.11"
+license = "Apache-2.0"
+readme = "README.md"
+authors = [{ name = "Voltry" }]
+keywords = ["mac", "apple-silicon", "hardware", "ssd", "battery", "report"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Operating System :: MacOS",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Typing :: Typed",
+]
+# Zero runtime dependencies, by decision (ADR 0012 decision 2): the standard library only.
+dependencies = []
+
+[project.urls]
+Homepage = "https://www.voltry.io"
+Source = "https://github.com/Voltry-tech/voltry-probe/tree/main/packages/voltry-mac"
+Changelog = "https://github.com/Voltry-tech/voltry-probe/blob/main/packages/voltry-mac/CHANGELOG.md"
+
+[project.scripts]
+voltry-mac = "voltry_mac.cli:main"
+
+# Published with a 3.11 floor (ADR 0012): lint for the floor, not the workspace default.
+[tool.ruff]
+extend = "../../pyproject.toml"
+target-version = "py311"
+
+[build-system]
+# The same cap as voltry-probe: hatchling 1.32 and later emit core Metadata-Version 2.5,
+# which release.yml's `twine check` gate rejects.
+requires = ["hatchling>=1.27,<1.32"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["voltry_mac"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [".hypothesis", ".pytest_cache", ".ruff_cache", ".coverage"]
+
+[tool.pytest.ini_options]
+addopts = "-q --import-mode=importlib"
+testpaths = ["tests"]
+filterwarnings = ["error"]
+
+[tool.coverage.run]
+branch = true
+source = ["voltry_mac"]
+
+[tool.coverage.report]
+fail_under = 90
+exclude_also = ["if TYPE_CHECKING:", "if __name__ == .__main__.:"]

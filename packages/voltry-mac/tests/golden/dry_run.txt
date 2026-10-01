@@ -1,0 +1,64 @@
+voltry-mac {version} can run these commands and nothing else.
+--dry-run runs none of them.
+
+As you:
+  C1   /usr/bin/sw_vers
+  C2   /usr/sbin/system_profiler -json SPHardwareDataType
+  C3   /usr/sbin/system_profiler -json SPNVMeDataType
+  C4   /usr/sbin/system_profiler -json SPDisplaysDataType
+  C5   /usr/sbin/system_profiler -json SPMemoryDataType
+  C6   /usr/sbin/system_profiler -json SPPowerDataType
+  C7   /usr/sbin/ioreg -r -c AppleSmartBattery -a
+  C8   /usr/bin/pmset -g therm
+  C9   /usr/bin/memory_pressure -Q
+  C11  /usr/sbin/diskutil info -plist /
+  C12  /usr/bin/csrutil status
+  C13  /usr/sbin/spctl --status
+  C14  /usr/bin/fdesetup status
+  C15  /usr/sbin/sysctl -n hw.model
+  C16  /usr/sbin/sysctl -n hw.target
+  C17  /usr/sbin/sysctl -n hw.memsize
+  C18  /usr/sbin/sysctl -n hw.ncpu
+  C19  /usr/sbin/sysctl -n machdep.cpu.brand_string
+  C20  /usr/sbin/sysctl -n hw.optional.arm64
+  C21  /usr/sbin/sysctl -n hw.nperflevels
+  C22  /usr/sbin/sysctl -n hw.perflevel0.name
+  C23  /usr/sbin/sysctl -n hw.perflevel0.physicalcpu
+  C24  /usr/sbin/sysctl -n hw.perflevel1.name
+  C25  /usr/sbin/sysctl -n hw.perflevel1.physicalcpu
+  C26  /usr/sbin/sysctl -n kern.hv_vmm_present
+  C27  /usr/sbin/sysctl -n kern.boottime
+  C28  <the running interpreter> -I -B -m voltry_mac.smart_iokit
+
+As you, only after you allow the two administrator reads:
+  X1   /usr/bin/sandbox-exec -p "(version 1) (allow default) (deny file-write*) (deny network*)" /usr/bin/true
+  P1   /bin/ps -axo pid,ppid,uid,lstart,comm
+
+As you, once, after the report is saved:
+  O1   /usr/bin/open <the exact path just published>
+
+Through sudo, only after you allow the two administrator reads:
+  S1   /usr/bin/sudo -k
+  S2   /usr/bin/sudo -v -p "Your Mac password, for the two steps above: "
+  S3   /usr/bin/sudo -u _mmaintenanced -H -p "Your Mac password, for the two steps above: " -- /usr/bin/sandbox-exec -p "(version 1) (allow default) (deny file-write*) (deny network*)" /usr/bin/sqlite3 -init /dev/null -safe -nofollow -readonly -json -bail "file:/private/var/db/mmaintenanced/memory_errors.db?readonly_shm=1" "PRAGMA query_only=ON; PRAGMA temp_store=MEMORY; WITH classes(correctable,label) AS (VALUES(1,'correctable'),(0,'uncorrectable')) SELECT c.label AS class, COUNT(e.ID) AS event_rows, COALESCE(SUM(e.count),0) AS reported_count FROM classes c LEFT JOIN ecc_errors_v2 e ON e.correctable=c.correctable GROUP BY c.correctable,c.label ORDER BY c.correctable DESC;"
+  S4   /usr/bin/sudo -H -p "Your Mac password, for the two steps above: " -- /usr/bin/sandbox-exec -p "(version 1) (allow default) (deny file-write*) (deny network*)" /usr/bin/powermetrics -n 5 -i 1000 --samplers cpu_power,gpu_power,thermal --format plist
+  S5   /usr/bin/sudo -k
+
+Through sudo with no password prompt, only with --yes and no terminal:
+  S2n  /usr/bin/sudo -v -n
+  S3n  /usr/bin/sudo -u _mmaintenanced -H -n -- /usr/bin/sandbox-exec -p "(version 1) (allow default) (deny file-write*) (deny network*)" /usr/bin/sqlite3 -init /dev/null -safe -nofollow -readonly -json -bail "file:/private/var/db/mmaintenanced/memory_errors.db?readonly_shm=1" "PRAGMA query_only=ON; PRAGMA temp_store=MEMORY; WITH classes(correctable,label) AS (VALUES(1,'correctable'),(0,'uncorrectable')) SELECT c.label AS class, COUNT(e.ID) AS event_rows, COALESCE(SUM(e.count),0) AS reported_count FROM classes c LEFT JOIN ecc_errors_v2 e ON e.correctable=c.correctable GROUP BY c.correctable,c.label ORDER BY c.correctable DESC;"
+  S4n  /usr/bin/sudo -H -n -- /usr/bin/sandbox-exec -p "(version 1) (allow default) (deny file-write*) (deny network*)" /usr/bin/powermetrics -n 5 -i 1000 --samplers cpu_power,gpu_power,thermal --format plist
+
+S3 and S3n run sqlite3 as macOS's memory-maintenance account, _mmaintenanced.
+S4 and S4n run powermetrics as root. Each runs inside the sandbox profile shown,
+which denies every file write and all network access.
+
+Read inside voltry-mac, with no command:
+  R1   Counts the names ending in .panic in /Library/Logs/DiagnosticReports
+  R2   Reads where /etc/localtime points, for the time zone name
+  R3   Reads AppleLocale from ~/Library/Preferences/.GlobalPreferences.plist,
+       for the paper size
+  R4   Reads sysctl.proc_translated, hw.optional.arm64 and kern.osrelease
+       through sysctlbyname
+  R5   Looks up the _mmaintenanced account in the account database, after you
+       allow the two administrator reads

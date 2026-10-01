@@ -1,0 +1,11 @@
+usage: voltry-mac render REPORT.json [--output DIR] [--no-open]
+
+Rebuild the PDF from a saved JSON. Collects nothing.
+
+positional arguments:
+  REPORT.json
+
+options:
+  -h, --help    show this help message and exit
+  --output DIR  save the PDF in DIR
+  --no-open     do not open the PDF

@@ -1,0 +1,1876 @@
+=== the reads allowed, with --json
+$ voltry-mac --json
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+The rest of the report needs administrator access for two read-only
+steps:
+
+  1. Count the memory errors macOS has recorded.
+     Runs /usr/bin/sqlite3 on one Apple database, read-only, as
+     macOS's own memory-maintenance account rather than as root,
+     inside a sandbox that forbids writing any file.
+  2. Measure processor power and thermal pressure for 5 seconds.
+     Runs /usr/bin/powermetrics as root, read-only, inside the same
+     kind of sandbox.
+
+Nothing else runs with administrator access. Voltry clears it right
+after these two reads and warns you if that fails. If you say no,
+you still get the report; these two items will say they need
+administrator access.
+
+Allow these two administrator reads? [y/N] y
+Reading memory error records... done
+Measuring power and thermal pressure for 5 seconds... done
+Administrator access cleared.
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.json
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- exit 0
+
+=== the reads declined
+$ voltry-mac
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+The rest of the report needs administrator access for two read-only
+steps:
+
+  1. Count the memory errors macOS has recorded.
+     Runs /usr/bin/sqlite3 on one Apple database, read-only, as
+     macOS's own memory-maintenance account rather than as root,
+     inside a sandbox that forbids writing any file.
+  2. Measure processor power and thermal pressure for 5 seconds.
+     Runs /usr/bin/powermetrics as root, read-only, inside the same
+     kind of sandbox.
+
+Nothing else runs with administrator access. Voltry clears it right
+after these two reads and warns you if that fails. If you say no,
+you still get the report; these two items will say they need
+administrator access.
+
+Allow these two administrator reads? [y/N] n
+Skipping the two administrator reads.
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- exit 0
+
+=== the question gets no answer
+$ voltry-mac
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+The rest of the report needs administrator access for two read-only
+steps:
+
+  1. Count the memory errors macOS has recorded.
+     Runs /usr/bin/sqlite3 on one Apple database, read-only, as
+     macOS's own memory-maintenance account rather than as root,
+     inside a sandbox that forbids writing any file.
+  2. Measure processor power and thermal pressure for 5 seconds.
+     Runs /usr/bin/powermetrics as root, read-only, inside the same
+     kind of sandbox.
+
+Nothing else runs with administrator access. Voltry clears it right
+after these two reads and warns you if that fails. If you say no,
+you still get the report; these two items will say they need
+administrator access.
+
+Allow these two administrator reads? [y/N] 
+Skipping the two administrator reads.
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- exit 0
+
+=== --no-root
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- exit 0
+
+=== not an administrator
+$ voltry-mac
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- exit 0
+
+=== no terminal
+$ voltry-mac
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- exit 0
+
+=== --yes
+$ voltry-mac --yes
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+The rest of the report needs administrator access for two read-only
+steps:
+
+  1. Count the memory errors macOS has recorded.
+     Runs /usr/bin/sqlite3 on one Apple database, read-only, as
+     macOS's own memory-maintenance account rather than as root,
+     inside a sandbox that forbids writing any file.
+  2. Measure processor power and thermal pressure for 5 seconds.
+     Runs /usr/bin/powermetrics as root, read-only, inside the same
+     kind of sandbox.
+
+Nothing else runs with administrator access. Voltry clears it right
+after these two reads and warns you if that fails. If you say no,
+you still get the report; these two items will say they need
+administrator access.
+
+Reading memory error records... done
+Measuring power and thermal pressure for 5 seconds... done
+Administrator access cleared.
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- exit 0
+
+=== no memory-maintenance account
+$ voltry-mac
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+The rest of the report needs administrator access for two read-only
+steps:
+
+  1. Count the memory errors macOS has recorded.
+     Runs /usr/bin/sqlite3 on one Apple database, read-only, as
+     macOS's own memory-maintenance account rather than as root,
+     inside a sandbox that forbids writing any file.
+  2. Measure processor power and thermal pressure for 5 seconds.
+     Runs /usr/bin/powermetrics as root, read-only, inside the same
+     kind of sandbox.
+
+Nothing else runs with administrator access. Voltry clears it right
+after these two reads and warns you if that fails. If you say no,
+you still get the report; these two items will say they need
+administrator access.
+
+Allow these two administrator reads? [y/N] y
+Measuring power and thermal pressure for 5 seconds... done
+Administrator access cleared.
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- exit 0
+
+=== the memory error read fails
+$ voltry-mac
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+The rest of the report needs administrator access for two read-only
+steps:
+
+  1. Count the memory errors macOS has recorded.
+     Runs /usr/bin/sqlite3 on one Apple database, read-only, as
+     macOS's own memory-maintenance account rather than as root,
+     inside a sandbox that forbids writing any file.
+  2. Measure processor power and thermal pressure for 5 seconds.
+     Runs /usr/bin/powermetrics as root, read-only, inside the same
+     kind of sandbox.
+
+Nothing else runs with administrator access. Voltry clears it right
+after these two reads and warns you if that fails. If you say no,
+you still get the report; these two items will say they need
+administrator access.
+
+Allow these two administrator reads? [y/N] y
+Reading memory error records... not read
+Measuring power and thermal pressure for 5 seconds... done
+Administrator access cleared.
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- exit 1
+
+=== the final clear fails
+$ voltry-mac
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+The rest of the report needs administrator access for two read-only
+steps:
+
+  1. Count the memory errors macOS has recorded.
+     Runs /usr/bin/sqlite3 on one Apple database, read-only, as
+     macOS's own memory-maintenance account rather than as root,
+     inside a sandbox that forbids writing any file.
+  2. Measure processor power and thermal pressure for 5 seconds.
+     Runs /usr/bin/powermetrics as root, read-only, inside the same
+     kind of sandbox.
+
+Nothing else runs with administrator access. Voltry clears it right
+after these two reads and warns you if that fails. If you say no,
+you still get the report; these two items will say they need
+administrator access.
+
+Allow these two administrator reads? [y/N] y
+Reading memory error records... done
+Measuring power and thermal pressure for 5 seconds... done
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- stderr
+WARNING: administrator access could not be cleared. Run: sudo -k
+WARNING: administrator access could not be cleared. Run: sudo -k
+--- exit 6
+
+=== a process outlives the power sample
+$ voltry-mac
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+The rest of the report needs administrator access for two read-only
+steps:
+
+  1. Count the memory errors macOS has recorded.
+     Runs /usr/bin/sqlite3 on one Apple database, read-only, as
+     macOS's own memory-maintenance account rather than as root,
+     inside a sandbox that forbids writing any file.
+  2. Measure processor power and thermal pressure for 5 seconds.
+     Runs /usr/bin/powermetrics as root, read-only, inside the same
+     kind of sandbox.
+
+Nothing else runs with administrator access. Voltry clears it right
+after these two reads and warns you if that fails. If you say no,
+you still get the report; these two items will say they need
+administrator access.
+
+Allow these two administrator reads? [y/N] y
+Reading memory error records... done
+Measuring power and thermal pressure for 5 seconds... not read
+Administrator access cleared.
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- stderr
+A process from the administrator reads may still be running: process 4242,
+powermetrics, user ID 0, started Wed Sep 23 14:05:40 2026.
+Check it first with
+  ps -p 4242 -o pid,uid,lstart,comm
+and only if all four still match, stop it with
+  sudo /bin/kill -TERM 4242
+--- exit 1
+
+=== a stop that could not be verified
+$ voltry-mac
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+The rest of the report needs administrator access for two read-only
+steps:
+
+  1. Count the memory errors macOS has recorded.
+     Runs /usr/bin/sqlite3 on one Apple database, read-only, as
+     macOS's own memory-maintenance account rather than as root,
+     inside a sandbox that forbids writing any file.
+  2. Measure processor power and thermal pressure for 5 seconds.
+     Runs /usr/bin/powermetrics as root, read-only, inside the same
+     kind of sandbox.
+
+Nothing else runs with administrator access. Voltry clears it right
+after these two reads and warns you if that fails. If you say no,
+you still get the report; these two items will say they need
+administrator access.
+
+Allow these two administrator reads? [y/N] y
+Reading memory error records... done
+Administrator access cleared.
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- stderr
+Voltry could not confirm that the administrator reads stopped: the process
+listing that checks them failed or did not run. Look with ps for sudo,
+sandbox-exec, sqlite3 or powermetrics processes started at the time of this run.
+--- exit 1
+
+=== Ctrl-C during the user reads
+$ voltry-mac
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac...
+--- stderr
+Stopped. Nothing was saved.
+--- exit 130
+
+=== Ctrl-C at the question
+$ voltry-mac
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+The rest of the report needs administrator access for two read-only
+steps:
+
+  1. Count the memory errors macOS has recorded.
+     Runs /usr/bin/sqlite3 on one Apple database, read-only, as
+     macOS's own memory-maintenance account rather than as root,
+     inside a sandbox that forbids writing any file.
+  2. Measure processor power and thermal pressure for 5 seconds.
+     Runs /usr/bin/powermetrics as root, read-only, inside the same
+     kind of sandbox.
+
+Nothing else runs with administrator access. Voltry clears it right
+after these two reads and warns you if that fails. If you say no,
+you still get the report; these two items will say they need
+administrator access.
+
+Allow these two administrator reads? [y/N] 
+--- stderr
+Stopped. Nothing was saved.
+--- exit 130
+
+=== Ctrl-C during the memory error read
+$ voltry-mac
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+The rest of the report needs administrator access for two read-only
+steps:
+
+  1. Count the memory errors macOS has recorded.
+     Runs /usr/bin/sqlite3 on one Apple database, read-only, as
+     macOS's own memory-maintenance account rather than as root,
+     inside a sandbox that forbids writing any file.
+  2. Measure processor power and thermal pressure for 5 seconds.
+     Runs /usr/bin/powermetrics as root, read-only, inside the same
+     kind of sandbox.
+
+Nothing else runs with administrator access. Voltry clears it right
+after these two reads and warns you if that fails. If you say no,
+you still get the report; these two items will say they need
+administrator access.
+
+Allow these two administrator reads? [y/N] y
+Reading memory error records... not read
+--- stderr
+Stopped. Nothing was saved.
+--- exit 130
+
+=== Ctrl-C during the memory error read, and the clear fails
+$ voltry-mac
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+The rest of the report needs administrator access for two read-only
+steps:
+
+  1. Count the memory errors macOS has recorded.
+     Runs /usr/bin/sqlite3 on one Apple database, read-only, as
+     macOS's own memory-maintenance account rather than as root,
+     inside a sandbox that forbids writing any file.
+  2. Measure processor power and thermal pressure for 5 seconds.
+     Runs /usr/bin/powermetrics as root, read-only, inside the same
+     kind of sandbox.
+
+Nothing else runs with administrator access. Voltry clears it right
+after these two reads and warns you if that fails. If you say no,
+you still get the report; these two items will say they need
+administrator access.
+
+Allow these two administrator reads? [y/N] y
+Reading memory error records... not read
+--- stderr
+WARNING: administrator access could not be cleared. Run: sudo -k
+Stopped. Nothing was saved.
+WARNING: administrator access could not be cleared. Run: sudo -k
+--- exit 130
+
+=== a report with the same name exists
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05 (2).pdf
+A report named for 14:05 was already there. It was not changed.
+Opening it in your PDF viewer.
+--- exit 0
+
+=== macOS refuses the Desktop
+$ voltry-mac --no-root --json
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+macOS did not let your terminal app use your Desktop folder, so the
+report was saved at the top of your home folder instead:
+  ~/Voltry Mac Report 2026-09-23 14.05.json
+  ~/Voltry Mac Report 2026-09-23 14.05.pdf
+To use the Desktop next time: System Settings, Privacy and Security,
+Files and Folders, then allow Desktop Folder for your terminal app.
+Opening it in your PDF viewer.
+--- exit 0
+
+=== --output a folder
+$ voltry-mac --no-root --output ~/reports
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+Saved: ~/reports/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- exit 0
+
+=== --output a folder that does not exist
+$ voltry-mac --no-root --output missing\x1b[2J
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+--- stderr
+Your report is shown above but could not be saved in this folder: No such file
+or directory.
+  missing\x1b[2J
+--- exit 4
+
+=== --output a long folder that does not exist
+$ voltry-mac --no-root --output ~/a folder with a long name/a folder with a long name/a folder with a long name
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+--- stderr
+Your report is shown above but could not be saved in this folder: No such file
+or directory.
+  ~/a folder with a long name/a folder with a long name/a folder with a long name
+--- exit 4
+
+=== --output names no folder
+$ voltry-mac --no-root --output ''
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+--- stderr
+Your report is shown above but could not be saved: --output names no folder.
+--- exit 4
+
+=== the disk is full
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+--- stderr
+Your report is shown above but could not be saved: No space left on device.
+--- exit 4
+
+=== the JSON's temporary file will not go
+$ voltry-mac --no-root --json
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+--- stderr
+Your report is shown above but could not be saved: no second temporary file is
+made while the first is still there.
+This run could not remove a file it made. It is safe to delete:
+  ~/Desktop/.voltry-mac-<random>.tmp
+--- exit 4
+
+=== a disk with no hard links
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+--- stderr
+Your report is shown above but could not be saved: this folder's disk cannot
+save the report safely, because its format has no hard links.
+--- exit 4
+
+=== macOS refuses the Desktop, and the home folder fails
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+--- stderr
+macOS did not let your terminal app use your Desktop folder, and the report
+could not be saved at the top of your home folder either: No space left on
+device.
+--- exit 4
+
+=== a failed save leaves a file
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+--- stderr
+Your report is shown above but could not be saved: No space left on device.
+This run could not remove a file it made. It is safe to delete:
+  ~/Desktop/.voltry-mac-<random>.tmp
+--- exit 4
+
+=== a saved report leaves its temporary file
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+--- stderr
+This run could not remove a file it made. It is safe to delete:
+  ~/Desktop/.voltry-mac-<random>.tmp
+The PDF was not opened: its temporary file above is another name for it.
+--- exit 0
+
+=== macOS refuses the Desktop midway, and files are left in two places
+$ voltry-mac --no-root --json
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+macOS did not let your terminal app use your Desktop folder, so the
+report was saved at the top of your home folder instead:
+  ~/Voltry Mac Report 2026-09-23 14.05.json
+  ~/Voltry Mac Report 2026-09-23 14.05.pdf
+To use the Desktop next time: System Settings, Privacy and Security,
+Files and Folders, then allow Desktop Folder for your terminal app.
+--- stderr
+This run could not remove files it made. They are safe to delete:
+  ~/Desktop/Voltry Mac Report 2026-09-23 14.05.json
+  ~/.voltry-mac-<random>.tmp
+The PDF was not opened: its temporary file above is another name for it.
+--- exit 0
+
+=== the PDF cannot be drawn
+$ voltry-mac --no-root --json
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+--- stderr
+Could not create the PDF. Please report this with voltry-mac --debug
+--- exit 4
+
+=== too little answers to save a report
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+--- stderr
+Could not read enough of this Mac to make a report, so no report file was
+written.
+These items did answer: macOS version, System Integrity Protection, Panic
+reports.
+--- exit 4
+
+=== nothing answers
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+--- stderr
+Could not read enough of this Mac to make a report, so no report file was
+written.
+No item answered.
+--- exit 4
+
+=== --no-open
+$ voltry-mac --no-root --no-open
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+--- exit 0
+
+=== the terminal report cannot be written in full
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+--- stderr
+The terminal report could not be written in full.
+--- exit 0
+
+=== an unexpected error
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+--- stderr
+Could not finish the report because of an unexpected error. Nothing was saved.
+Please report this with voltry-mac --debug
+--- exit 4
+
+=== Ctrl-C during the save
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+--- stderr
+Stopped. Nothing was saved.
+--- exit 130
+
+=== Ctrl-C as the run says the report could not be saved
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+--- stderr
+Your report is shown above but could not be saved: No space left on device.
+Stopped. Nothing was saved.
+--- exit 130
+
+=== Ctrl-C once the report is saved
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+--- stderr
+Stopped. Your report is saved, and was not opened.
+--- exit 130
+
+=== an unexpected error once the report is saved
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+--- stderr
+Your report was saved, but the run then stopped on an unexpected error.
+Please report this with voltry-mac --debug
+--- exit 1
+
+=== Ctrl-C just before the report opens
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+--- stderr
+Stopped. Your report is saved, and was not opened.
+--- exit 130
+
+=== Ctrl-C as the report opens
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+--- stderr
+Stopped. Your report is saved; it may not have opened.
+--- exit 130
+
+=== Ctrl-C once the report has opened
+$ voltry-mac --no-root
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- stderr
+Stopped. Your report is saved; it may not have opened.
+--- exit 130
+
+=== --debug
+$ voltry-mac --debug
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+The rest of the report needs administrator access for two read-only
+steps:
+
+  1. Count the memory errors macOS has recorded.
+     Runs /usr/bin/sqlite3 on one Apple database, read-only, as
+     macOS's own memory-maintenance account rather than as root,
+     inside a sandbox that forbids writing any file.
+  2. Measure processor power and thermal pressure for 5 seconds.
+     Runs /usr/bin/powermetrics as root, read-only, inside the same
+     kind of sandbox.
+
+Nothing else runs with administrator access. Voltry clears it right
+after these two reads and warns you if that fails. If you say no,
+you still get the report; these two items will say they need
+administrator access.
+
+Allow these two administrator reads? [y/N] y
+Reading memory error records... done
+Measuring power and thermal pressure for 5 seconds... done
+Administrator access cleared.
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- stderr
+C1 /usr/bin/sw_vers: exit 0, 20 ms
+C2 /usr/sbin/system_profiler -json SPHardwareDataType: exit 0, 20 ms
+C3 /usr/sbin/system_profiler -json SPNVMeDataType: exit 0, 20 ms
+C4 /usr/sbin/system_profiler -json SPDisplaysDataType: exit 0, 20 ms
+C5 /usr/sbin/system_profiler -json SPMemoryDataType: exit 0, 20 ms
+C6 /usr/sbin/system_profiler -json SPPowerDataType: exit 0, 20 ms
+C7 /usr/sbin/ioreg -r -c AppleSmartBattery -a: exit 0, 20 ms
+C8 /usr/bin/pmset -g therm: exit 0, 20 ms
+C9 /usr/bin/memory_pressure -Q: exit 0, 20 ms
+C11 /usr/sbin/diskutil info -plist /: exit 0, 20 ms
+C12 /usr/bin/csrutil status: exit 0, 20 ms
+C13 /usr/sbin/spctl --status: exit 0, 20 ms
+C14 /usr/bin/fdesetup status: exit 0, 20 ms
+C15 /usr/sbin/sysctl -n hw.model: exit 0, 20 ms
+C16 /usr/sbin/sysctl -n hw.target: exit 0, 20 ms
+C17 /usr/sbin/sysctl -n hw.memsize: exit 0, 20 ms
+C18 /usr/sbin/sysctl -n hw.ncpu: exit 0, 20 ms
+C19 /usr/sbin/sysctl -n machdep.cpu.brand_string: exit 0, 20 ms
+C20 /usr/sbin/sysctl -n hw.optional.arm64: exit 0, 20 ms
+C21 /usr/sbin/sysctl -n hw.nperflevels: exit 0, 20 ms
+C22 /usr/sbin/sysctl -n hw.perflevel0.name: exit 0, 20 ms
+C23 /usr/sbin/sysctl -n hw.perflevel0.physicalcpu: exit 0, 20 ms
+C24 /usr/sbin/sysctl -n hw.perflevel1.name: exit 0, 20 ms
+C25 /usr/sbin/sysctl -n hw.perflevel1.physicalcpu: exit 0, 20 ms
+C26 /usr/sbin/sysctl -n kern.hv_vmm_present: exit 0, 20 ms
+C27 /usr/sbin/sysctl -n kern.boottime: exit 0, 20 ms
+C28 <the running interpreter> -I -B -m voltry_mac.smart_iokit: exit 0, 20 ms
+X1 /usr/bin/sandbox-exec -p "(version 1) (allow default) (deny file-write*) (deny network*)" /usr/bin/true: exit 0, 20 ms
+P1 /bin/ps -axo pid,ppid,uid,lstart,comm: exit 0, 20 ms
+S1 /usr/bin/sudo -k: exit 0, 20 ms
+S2 /usr/bin/sudo -v -p "Your Mac password, for the two steps above: ": exit 0, 20 ms
+S3 /usr/bin/sudo -u _mmaintenanced -H -p "Your Mac password, for the two steps above: " -- /usr/bin/sandbox-exec -p "(version 1) (allow default) (deny file-write*) (deny network*)" /usr/bin/sqlite3 -init /dev/null -safe -nofollow -readonly -json -bail "file:/private/var/db/mmaintenanced/memory_errors.db?readonly_shm=1" "PRAGMA query_only=ON; PRAGMA temp_store=MEMORY; WITH classes(correctable,label) AS (VALUES(1,'correctable'),(0,'uncorrectable')) SELECT c.label AS class, COUNT(e.ID) AS event_rows, COALESCE(SUM(e.count),0) AS reported_count FROM classes c LEFT JOIN ecc_errors_v2 e ON e.correctable=c.correctable GROUP BY c.correctable,c.label ORDER BY c.correctable DESC;": exit 0, 900 ms, verified
+S4 /usr/bin/sudo -H -p "Your Mac password, for the two steps above: " -- /usr/bin/sandbox-exec -p "(version 1) (allow default) (deny file-write*) (deny network*)" /usr/bin/powermetrics -n 5 -i 1000 --samplers cpu_power,gpu_power,thermal --format plist: exit 0, 900 ms, verified
+S5 /usr/bin/sudo -k: exit 0, 20 ms
+O1 /usr/bin/open <the exact path just published>: exit 0, 20 ms
+--- exit 0
+
+=== --debug, when commands end in other ways
+$ voltry-mac --debug
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac... done (0.0 s).
+
+The rest of the report needs administrator access for two read-only
+steps:
+
+  1. Count the memory errors macOS has recorded.
+     Runs /usr/bin/sqlite3 on one Apple database, read-only, as
+     macOS's own memory-maintenance account rather than as root,
+     inside a sandbox that forbids writing any file.
+  2. Measure processor power and thermal pressure for 5 seconds.
+     Runs /usr/bin/powermetrics as root, read-only, inside the same
+     kind of sandbox.
+
+Nothing else runs with administrator access. Voltry clears it right
+after these two reads and warns you if that fails. If you say no,
+you still get the report; these two items will say they need
+administrator access.
+
+Allow these two administrator reads? [y/N] y
+Reading memory error records... not read
+Measuring power and thermal pressure for 5 seconds... not read
+
+[the terminal summary, as tests/golden/terminal holds it]
+
+The full report, with Appendix A (everything tried) and Appendix B
+(how it was made), is in the PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- stderr
+C1 /usr/bin/sw_vers: exit 0, 20 ms
+C2 /usr/sbin/system_profiler -json SPHardwareDataType: exit 0, 20 ms
+C3 /usr/sbin/system_profiler -json SPNVMeDataType: exit 0, 20 ms
+C4 /usr/sbin/system_profiler -json SPDisplaysDataType: ended on signal 6, 20 ms
+C5 /usr/sbin/system_profiler -json SPMemoryDataType: exit 0, 20 ms
+C6 /usr/sbin/system_profiler -json SPPowerDataType: exit 0, 20 ms
+C7 /usr/sbin/ioreg -r -c AppleSmartBattery -a: exit 0, 20 ms
+C8 /usr/bin/pmset -g therm: could not start, 20 ms
+C9 /usr/bin/memory_pressure -Q: ran past its deadline, then signal 9, 20 ms
+C11 /usr/sbin/diskutil info -plist /: exit 0, 20 ms
+C12 /usr/bin/csrutil status: exit 0, 20 ms
+C13 /usr/sbin/spctl --status: went over the output cap, then exit 0, 20 ms
+C14 /usr/bin/fdesetup status: ran past its deadline, not reaped, 20 ms
+C15 /usr/sbin/sysctl -n hw.model: exit 0, 20 ms
+C16 /usr/sbin/sysctl -n hw.target: exit 0, 20 ms
+C17 /usr/sbin/sysctl -n hw.memsize: exit 0, 20 ms
+C18 /usr/sbin/sysctl -n hw.ncpu: exit 0, 20 ms
+C19 /usr/sbin/sysctl -n machdep.cpu.brand_string: exit 0, 20 ms
+C20 /usr/sbin/sysctl -n hw.optional.arm64: exit 0, 20 ms
+C21 /usr/sbin/sysctl -n hw.nperflevels: exit 0, 20 ms
+C22 /usr/sbin/sysctl -n hw.perflevel0.name: exit 0, 20 ms
+C23 /usr/sbin/sysctl -n hw.perflevel0.physicalcpu: exit 0, 20 ms
+C24 /usr/sbin/sysctl -n hw.perflevel1.name: exit 0, 20 ms
+C25 /usr/sbin/sysctl -n hw.perflevel1.physicalcpu: exit 0, 20 ms
+C26 /usr/sbin/sysctl -n kern.hv_vmm_present: exit 0, 20 ms
+C27 /usr/sbin/sysctl -n kern.boottime: exit 0, 20 ms
+C28 <the running interpreter> -I -B -m voltry_mac.smart_iokit: exit 0, 20 ms
+X1 /usr/bin/sandbox-exec -p "(version 1) (allow default) (deny file-write*) (deny network*)" /usr/bin/true: exit 0, 20 ms
+P1 /bin/ps -axo pid,ppid,uid,lstart,comm: exit 0, 20 ms
+S1 /usr/bin/sudo -k: exit 0, 20 ms
+S2 /usr/bin/sudo -v -p "Your Mac password, for the two steps above: ": exit 0, 20 ms
+S3 /usr/bin/sudo -u _mmaintenanced -H -p "Your Mac password, for the two steps above: " -- /usr/bin/sandbox-exec -p "(version 1) (allow default) (deny file-write*) (deny network*)" /usr/bin/sqlite3 -init /dev/null -safe -nofollow -readonly -json -bail "file:/private/var/db/mmaintenanced/memory_errors.db?readonly_shm=1" "PRAGMA query_only=ON; PRAGMA temp_store=MEMORY; WITH classes(correctable,label) AS (VALUES(1,'correctable'),(0,'uncorrectable')) SELECT c.label AS class, COUNT(e.ID) AS event_rows, COALESCE(SUM(e.count),0) AS reported_count FROM classes c LEFT JOIN ecc_errors_v2 e ON e.correctable=c.correctable GROUP BY c.correctable,c.label ORDER BY c.correctable DESC;": could not start, 0 ms, verified
+S4 /usr/bin/sudo -H -p "Your Mac password, for the two steps above: " -- /usr/bin/sandbox-exec -p "(version 1) (allow default) (deny file-write*) (deny network*)" /usr/bin/powermetrics -n 5 -i 1000 --samplers cpu_power,gpu_power,thermal --format plist: ran past its deadline, 900 ms, survivor
+S5 /usr/bin/sudo -k: ran past its deadline, could not be signalled, 20 ms
+WARNING: administrator access could not be cleared. Run: sudo -k
+A process from the administrator reads may still be running: process 4243, an
+unexpected process, user ID 0, started Wed Sep 23 14:05:40 2026.
+Check it first with
+  ps -p 4243 -o pid,uid,lstart,comm
+and only if all four still match, stop it with
+  sudo /bin/kill -TERM 4243
+O1 /usr/bin/open <the exact path just published>: exit 0, 20 ms
+WARNING: administrator access could not be cleared. Run: sudo -k
+--- exit 6
+
+=== --debug, and Ctrl-C during the user reads
+$ voltry-mac --debug
+Voltry Mac hardware observation report {version} (preview)
+Reads system information without changing any setting. Voltry sends
+nothing over the network and creates only the report files you ask for.
+
+Reading this Mac...
+--- stderr
+C1 /usr/bin/sw_vers: exit 0, 20 ms
+C2 /usr/sbin/system_profiler -json SPHardwareDataType: exit 0, 20 ms
+C3 /usr/sbin/system_profiler -json SPNVMeDataType: exit 0, 20 ms
+C4 /usr/sbin/system_profiler -json SPDisplaysDataType: exit 0, 20 ms
+C5 /usr/sbin/system_profiler -json SPMemoryDataType: cancelled, then signal 15, 20 ms
+Stopped. Nothing was saved.
+--- exit 130
+
+=== --version
+$ voltry-mac --version
+voltry-mac {version}
+Python {python}
+Architecture {architecture}
+Rosetta {rosetta}
+--- exit 0
+
+=== --yes with --no-root
+$ voltry-mac --yes --no-root
+--- stderr
+--yes and --no-root cannot be used together
+--- exit 2
+
+=== an argument voltry-mac does not take
+$ voltry-mac --frobnicate
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+voltry-mac does not take this argument here:
+  --frobnicate
+--- exit 2
+
+=== a folder given without --output
+$ voltry-mac ~/reports
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+voltry-mac does not take this argument here:
+  ~/reports
+--- exit 2
+
+=== an option spelled wrong, before its folder
+$ voltry-mac --out ~/reports
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+voltry-mac does not take these arguments here:
+  --out
+  ~/reports
+--- exit 2
+
+=== an argument with a terminal control in it
+$ voltry-mac --bad\x1b[2J
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+voltry-mac does not take this argument here:
+  --bad\x1b[2J
+--- exit 2
+
+=== an argument that turns the line right to left
+$ voltry-mac --x\u202etxt.exe
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+voltry-mac does not take this argument here:
+  --x\u202etxt.exe
+--- exit 2
+
+=== --paper with another size
+$ voltry-mac --paper tabloid
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+--paper takes letter or a4
+--- exit 2
+
+=== --paper with no size
+$ voltry-mac --paper
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+--paper takes letter or a4
+--- exit 2
+
+=== --output with no folder
+$ voltry-mac --output
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+--output needs a folder
+--- exit 2
+
+=== an option given an argument it does not take
+$ voltry-mac --json=yes
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+--json takes no argument
+--- exit 2
+
+=== render with no report
+$ voltry-mac render
+--- stderr
+usage: voltry-mac render REPORT.json [--output DIR] [--no-open]
+render needs REPORT.json
+--- exit 2
+
+=== render with a second file
+$ voltry-mac render report.json other.json
+--- stderr
+usage: voltry-mac render REPORT.json [--output DIR] [--no-open]
+voltry-mac does not take this argument here:
+  other.json
+--- exit 2
+
+=== render with a collecting option
+$ voltry-mac --json render report.json
+--- stderr
+usage: voltry-mac render REPORT.json [--output DIR] [--no-open]
+render takes only REPORT.json, --output DIR and --no-open
+--- exit 2
+
+=== render's --output with no folder
+$ voltry-mac render report.json --output
+--- stderr
+usage: voltry-mac render REPORT.json [--output DIR] [--no-open]
+--output needs a folder
+--- exit 2
+
+=== a usage error argparse names in no way the tool knows
+$ voltry-mac --frobnicate
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+voltry-mac could not read this command line
+--- exit 2
+
+=== an option spelled wrong, its folder after =
+$ voltry-mac --ouput=~/reports
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+voltry-mac does not take this argument here:
+  --ouput=~/reports
+--- exit 2
+
+=== an option cut short, its folder after =
+$ voltry-mac --out=~/reports
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+voltry-mac does not take this argument here:
+  --out=~/reports
+--- exit 2
+
+=== an empty argument
+$ voltry-mac ''
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+voltry-mac does not take this argument here:
+  (an empty argument)
+--- exit 2
+
+=== render with an empty argument for its report
+$ voltry-mac render ''
+--- stderr
+usage: voltry-mac render REPORT.json [--output DIR] [--no-open]
+render needs REPORT.json
+--- exit 2
+
+=== -- before render
+$ voltry-mac -- render report.json
+--- stderr
+usage: voltry-mac render REPORT.json [--output DIR] [--no-open]
+voltry-mac does not take this argument here:
+  --
+--- exit 2
+
+=== -- before an option
+$ voltry-mac -- --json
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+voltry-mac does not take this argument here:
+  --
+--- exit 2
+
+=== -- between an option and render
+$ voltry-mac --no-root -- render report.json
+--- stderr
+usage: voltry-mac render REPORT.json [--output DIR] [--no-open]
+voltry-mac does not take this argument here:
+  --
+--- exit 2
+
+=== -- before -h
+$ voltry-mac -- -h
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+voltry-mac does not take this argument here:
+  --
+--- exit 2
+
+=== -- before an option voltry-mac does not have
+$ voltry-mac -- -x
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+voltry-mac does not take this argument here:
+  --
+--- exit 2
+
+=== -- between two options
+$ voltry-mac --json -- --json
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+voltry-mac does not take this argument here:
+  --
+--- exit 2
+
+=== --output with a folder that starts with a dash and a digit
+$ voltry-mac --output -1.json
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+voltry-mac does not take this argument here:
+  -1.json
+--- exit 2
+
+=== render with a file that starts with a dash and a digit
+$ voltry-mac render -1.json
+--- stderr
+usage: voltry-mac render REPORT.json [--output DIR] [--no-open]
+voltry-mac does not take this argument here:
+  -1.json
+--- exit 2
+
+=== a word that starts with a dash and a digit, before -h
+$ voltry-mac -1.json -h
+--- stderr
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version
+voltry-mac does not take this argument here:
+  -1.json
+--- exit 2
+
+=== started with sudo
+$ voltry-mac
+--- stderr
+Run voltry-mac without sudo. It asks for your password only for the
+two steps that need it, and it saves the report as you, not as root.
+No report data was collected and no report file was written.
+--- exit 5
+
+=== an Intel Mac
+$ voltry-mac
+--- stderr
+Voltry Mac hardware observation report {version} (preview)
+
+This version of voltry-mac reads Apple silicon Macs (M1 and later).
+This Mac has an Intel processor, which uses different sensors and
+storage interfaces, so voltry-mac cannot give you an honest report
+yet. No report data was collected and no report file was written.
+--- exit 3
+
+=== macOS 14
+$ voltry-mac
+--- stderr
+Voltry Mac hardware observation report {version} (preview)
+
+voltry-mac needs macOS 15 or later. This Mac runs macOS 14.
+No report data was collected and no report file was written.
+--- exit 3
+
+=== a Darwin release older than macOS 11
+$ voltry-mac
+--- stderr
+Voltry Mac hardware observation report {version} (preview)
+
+voltry-mac needs macOS 15 or later.
+No report data was collected and no report file was written.
+--- exit 3
+
+=== not macOS
+$ voltry-mac
+--- stderr
+Voltry Mac hardware observation report {version} (preview)
+
+This version of voltry-mac reads Apple silicon Macs (M1 and later)
+running macOS 15 or later, and this computer does not run macOS.
+No report data was collected and no report file was written.
+--- exit 3
+
+=== the processor type cannot be read
+$ voltry-mac
+--- stderr
+Voltry Mac hardware observation report {version} (preview)
+
+This version of voltry-mac reads Apple silicon Macs (M1 and later),
+and could not read this Mac's processor type.
+No report data was collected and no report file was written.
+--- exit 3
+
+=== the processor type cannot be read, on macOS 14
+$ voltry-mac
+--- stderr
+Voltry Mac hardware observation report {version} (preview)
+
+voltry-mac needs macOS 15 or later. This Mac runs macOS 14.
+No report data was collected and no report file was written.
+--- exit 3
+
+=== whether Python runs under Rosetta cannot be read
+$ voltry-mac
+--- stderr
+Voltry Mac hardware observation report {version} (preview)
+
+voltry-mac could not read whether this Python runs under Rosetta,
+which the report must record.
+No report data was collected and no report file was written.
+--- exit 3
+
+=== the macOS version cannot be read
+$ voltry-mac
+--- stderr
+Voltry Mac hardware observation report {version} (preview)
+
+voltry-mac needs macOS 15 or later, and could not read this Mac's
+macOS version.
+No report data was collected and no report file was written.
+--- exit 3
+
+=== --help, started with sudo
+$ voltry-mac --help
+--- stderr
+Run voltry-mac without sudo. It asks for your password only for the
+two steps that need it, and it saves the report as you, not as root.
+No report data was collected and no report file was written.
+--- exit 5
+
+=== --help on an Intel Mac
+$ voltry-mac --help
+--- stderr
+Voltry Mac hardware observation report {version} (preview)
+
+This version of voltry-mac reads Apple silicon Macs (M1 and later).
+This Mac has an Intel processor, which uses different sensors and
+storage interfaces, so voltry-mac cannot give you an honest report
+yet. No report data was collected and no report file was written.
+--- exit 3
+
+=== render a report another version made
+$ voltry-mac render report.json
+Voltry Mac hardware observation report {version} (preview)
+
+This report was made by voltry-mac 0.0.9, renderer 1; this PDF is drawn by
+voltry-mac {version}, renderer 1, so it may differ from the original PDF.
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- exit 0
+
+=== render a report this version made
+$ voltry-mac render report.json
+Voltry Mac hardware observation report {version} (preview)
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- exit 0
+
+=== render a file that is not JSON
+$ voltry-mac render report.json
+--- stderr
+Could not render this file: not well-formed JSON.
+  report.json
+--- exit 2
+
+=== render a report that fails validation
+$ voltry-mac render report.json
+--- stderr
+Could not render this file. The field below is wrong:
+must be an IANA identifier or unknown.
+  time_zone
+  report.json
+--- exit 2
+
+=== render a report with an unknown key of 64 characters
+$ voltry-mac render report.json
+--- stderr
+Could not render this file. The field below is wrong:
+not a value key of this surface.
+  surfaces[0].values.kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+  report.json
+--- exit 2
+
+=== render a report with an unknown key that has spaces
+$ voltry-mac render report.json
+--- stderr
+Could not render this file. The field below is wrong:
+not a value key of this surface.
+  surfaces[0].values['a key with spaces in it, as a report can hold']
+  report.json
+--- exit 2
+
+=== render a report with a top-level key of 65 characters
+$ voltry-mac render report.json
+--- stderr
+Could not render this file. The field below is wrong:
+a key longer than 64 characters.
+  (top level)
+  report.json
+--- exit 2
+
+=== render a report with a top-level key that holds a control character
+$ voltry-mac render report.json
+--- stderr
+Could not render this file. The field below is wrong:
+a control, separator, bidirectional or surrogate character.
+  (top level)
+  report.json
+--- exit 2
+
+=== render a folder
+$ voltry-mac render report.json
+--- stderr
+Could not read this file: it is not a file.
+  report.json
+--- exit 2
+
+=== render a missing file
+$ voltry-mac render report.json
+--- stderr
+Could not read this file: No such file or directory.
+  report.json
+--- exit 2
+
+=== render to a folder that does not exist
+$ voltry-mac render report.json --output missing
+Voltry Mac hardware observation report {version} (preview)
+
+This report was made by voltry-mac 0.0.9, renderer 1; this PDF is drawn by
+voltry-mac {version}, renderer 1, so it may differ from the original PDF.
+
+--- stderr
+The PDF could not be saved in this folder: No such file or directory.
+  missing
+--- exit 4
+
+=== render with --output naming no folder
+$ voltry-mac render report.json --output ''
+Voltry Mac hardware observation report {version} (preview)
+
+--- stderr
+The PDF could not be saved: --output names no folder.
+--- exit 4
+
+=== render when the disk is full
+$ voltry-mac render report.json
+Voltry Mac hardware observation report {version} (preview)
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+--- stderr
+The PDF could not be saved: No space left on device.
+--- exit 4
+
+=== render when macOS refuses the Desktop
+$ voltry-mac render report.json
+Voltry Mac hardware observation report {version} (preview)
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+macOS did not let your terminal app use your Desktop folder, so the
+report was saved at the top of your home folder instead:
+  ~/Voltry Mac Report 2026-09-23 14.05.pdf
+To use the Desktop next time: System Settings, Privacy and Security,
+Files and Folders, then allow Desktop Folder for your terminal app.
+Opening it in your PDF viewer.
+--- exit 0
+
+=== render when macOS refuses the Desktop, and the home folder fails
+$ voltry-mac render report.json
+Voltry Mac hardware observation report {version} (preview)
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+--- stderr
+macOS did not let your terminal app use your Desktop folder, and the PDF could
+not be saved at the top of your home folder either: No space left on device.
+--- exit 4
+
+=== render when a PDF with the same name exists
+$ voltry-mac render report.json
+Voltry Mac hardware observation report {version} (preview)
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05 (2).pdf
+A report named for 14:05 was already there. It was not changed.
+Opening it in your PDF viewer.
+--- exit 0
+
+=== render's failed save leaves a file
+$ voltry-mac render report.json
+Voltry Mac hardware observation report {version} (preview)
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+--- stderr
+The PDF could not be saved: No space left on device.
+This run could not remove a file it made. It is safe to delete:
+  ~/Desktop/.voltry-mac-<random>.tmp
+--- exit 4
+
+=== render's saved PDF leaves its temporary file
+$ voltry-mac render report.json
+Voltry Mac hardware observation report {version} (preview)
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+--- stderr
+This run could not remove a file it made. It is safe to delete:
+  ~/Desktop/.voltry-mac-<random>.tmp
+The PDF was not opened: its temporary file above is another name for it.
+--- exit 0
+
+=== render a PDF that cannot be drawn
+$ voltry-mac render report.json
+--- stderr
+Could not draw the PDF. Please report this.
+--- exit 4
+
+=== Ctrl-C while render reads the file
+$ voltry-mac render report.json
+--- stderr
+Stopped. Nothing was saved.
+--- exit 130
+
+=== Ctrl-C as render says the PDF could not be saved
+$ voltry-mac render report.json --output missing
+Voltry Mac hardware observation report {version} (preview)
+
+--- stderr
+The PDF could not be saved in this folder: No such file or directory.
+  missing
+Stopped. Nothing was saved.
+--- exit 130
+
+=== Ctrl-C during render's save
+$ voltry-mac render report.json
+Voltry Mac hardware observation report {version} (preview)
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+--- stderr
+Stopped. Nothing was saved.
+--- exit 130
+
+=== Ctrl-C once render has saved the PDF
+$ voltry-mac render report.json
+Voltry Mac hardware observation report {version} (preview)
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+--- stderr
+Stopped. The PDF is saved, and was not opened.
+--- exit 130
+
+=== Ctrl-C just before render opens the PDF
+$ voltry-mac render report.json
+Voltry Mac hardware observation report {version} (preview)
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+--- stderr
+Stopped. The PDF is saved, and was not opened.
+--- exit 130
+
+=== Ctrl-C as render opens the PDF
+$ voltry-mac render report.json
+Voltry Mac hardware observation report {version} (preview)
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+--- stderr
+Stopped. The PDF is saved; it may not have opened.
+--- exit 130
+
+=== Ctrl-C once render has opened the PDF
+$ voltry-mac render report.json
+Voltry Mac hardware observation report {version} (preview)
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+Opening it in your PDF viewer.
+--- stderr
+Stopped. The PDF is saved; it may not have opened.
+--- exit 130
+
+=== an unexpected error in render's save
+$ voltry-mac render report.json
+Voltry Mac hardware observation report {version} (preview)
+
+--- stderr
+Could not save the PDF because of an unexpected error. Nothing was saved.
+Please report this.
+--- exit 4
+
+=== an unexpected error once render has saved the PDF
+$ voltry-mac render report.json
+Voltry Mac hardware observation report {version} (preview)
+
+macOS may ask whether your terminal app can use your Desktop folder.
+Choose Allow to save the report there.
+Saved: ~/Desktop/Voltry Mac Report 2026-09-23 14.05.pdf
+--- stderr
+The PDF was saved, but render then stopped on an unexpected error.
+Please report this.
+--- exit 1

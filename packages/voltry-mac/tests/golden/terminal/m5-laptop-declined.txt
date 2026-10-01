@@ -1,0 +1,79 @@
+MAC HARDWARE OBSERVATION REPORT
+Point-in-time observations, not a diagnosis, grade or certificate.
+MacBook Pro (Mac17,2), Apple M5. 23 Sep 2026, 14:05 (UTC-7). ID b6aa94965eb9
+Collection: partial. 20 read, 2 skipped (administrator reads
+declined), 1 unavailable.
+Administrator reads: asked; you chose not to allow them.
+Validated configuration: yes.
+
+AT A GLANCE
+  Storage   SSD reports 1% of its rated endurance used.        reported
+  Battery   macOS reports condition Good, capacity 99%.        reported
+  Memory    Memory error records not read: needs administrator
+            access (you chose not to allow it).
+  Thermal   macOS thermal warning level now: none recorded.    reported
+  Security  SIP, Gatekeeper, FileVault and Activation Lock on. reported
+  Not read  Power and thermal check: needs administrator access (you
+            chose not to allow it). ECC error counters: no public
+            interface on Macs.
+
+WHAT THIS REPORT CANNOT TELL YOU
+  - Whether the memory has ever had errors. Apple offers no public
+    memory error counter, and its private log has unknown retention.
+  - Its complete prior use. Controller counters give limited
+    device-reported history (power-on hours, data written); nothing
+    here shows how it was used, or how long it will last.
+  - Repair history. System Settings, General, About, Parts and
+    Service shows Apple's own view.
+  - Value or price. Voltry does not assess either.
+
+THIS MAC                                             as macOS reports it
+  Model             MacBook Pro, Mac17,2, model number MDE34LL/A
+  Chip              Apple M5: 4 Super and 6 Efficiency cores, 10-core GPU
+  Memory            24 GB LPDDR5 (Micron)
+  Startup disk      APPLE SSD AP1024Z, 1 TB, the internal SSD (disk0)
+  Serial number     ending in K7Q2 (add --show-serial to print it)
+  macOS             26.6.2 (25G83), firmware 18000.161.10
+
+SECURITY SETTINGS                                    as macOS reports it
+  System Integrity Protection  On
+  Gatekeeper                   On
+  FileVault                    On
+  Activation Lock              On
+
+SYSTEM RECORDS                 from the boot clock and the crash reports
+  Last restart      28 Aug 2026, 26 days ago                    derived
+  Panic reports     0 kept on this Mac                          derived
+
+STORAGE HEALTH AND WEAR                        from macOS's disk profile
+  SMART status        Verified                                  reported
+                                  from the disk's own controller (IOKit)
+  Endurance used      1%                                        reported
+  Available spare     100% (threshold 99%)                      reported
+  Data written        13.3 TB (26,019,396 units of 512,000 B)   derived
+  Power-on hours      427                                       measured
+  Unsafe shutdowns    5                                         measured
+  Media errors        0                                         measured
+  Error log entries   0                                         measured
+  Temperature now     35 °C                                     derived
+
+BATTERY                                        from macOS's power report
+  Condition           Good                                      reported
+  Maximum capacity    99%                                       reported
+  Charge now          100%, fully charged                       measured
+  Power source        charger connected, not charging           measured
+                                            from the battery's own gauge
+  Charge cycles       57                                        measured
+  Design cycle count  1,000                                     reported
+  Full charge now     5,954 mAh                                 measured
+  Design capacity     6,249 mAh                                 reported
+  Temperature         30.4 °C                                   derived
+
+MEMORY
+  Memory pressure now   38% free                                measured
+  Memory error records  Not read: needs administrator access (you chose not to
+                        allow it)
+  ECC error counters    Unavailable: macOS has no public interface
+
+POWER AND THERMAL CHECK
+  Not read: needs administrator access (you chose not to allow it).

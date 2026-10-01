@@ -1,0 +1,9 @@
+{
+  "SPMemoryDataType" : [
+    {
+      "dimm_manufacturer" : "Micron",
+      "dimm_type" : "LPDDR5",
+      "SPMemoryDataType" : "24 GB"
+    }
+  ]
+}

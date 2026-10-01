@@ -1,0 +1,868 @@
+{
+  "collected_at_local": "2026-09-23T14:05:31-07:00",
+  "collected_at_utc": "2026-09-23T21:05:31Z",
+  "collection": {
+    "not_applicable": 0,
+    "read": 20,
+    "skipped": 2,
+    "status": "partial",
+    "unavailable": 1,
+    "unexpected_reasons": []
+  },
+  "commands": [
+    {
+      "duration_ms": 24,
+      "failed_runs": 0,
+      "id": "C1",
+      "runs": 1
+    },
+    {
+      "duration_ms": 131,
+      "failed_runs": 0,
+      "id": "C2",
+      "runs": 1
+    },
+    {
+      "duration_ms": 158,
+      "failed_runs": 0,
+      "id": "C3",
+      "runs": 1
+    },
+    {
+      "duration_ms": 29,
+      "failed_runs": 0,
+      "id": "C4",
+      "runs": 1
+    },
+    {
+      "duration_ms": 32,
+      "failed_runs": 0,
+      "id": "C5",
+      "runs": 1
+    },
+    {
+      "duration_ms": 35,
+      "failed_runs": 0,
+      "id": "C6",
+      "runs": 1
+    },
+    {
+      "duration_ms": 38,
+      "failed_runs": 0,
+      "id": "C7",
+      "runs": 1
+    },
+    {
+      "duration_ms": 41,
+      "failed_runs": 0,
+      "id": "C8",
+      "runs": 1
+    },
+    {
+      "duration_ms": 44,
+      "failed_runs": 0,
+      "id": "C9",
+      "runs": 1
+    },
+    {
+      "duration_ms": 47,
+      "failed_runs": 0,
+      "id": "C11",
+      "runs": 1
+    },
+    {
+      "duration_ms": 50,
+      "failed_runs": 0,
+      "id": "C12",
+      "runs": 1
+    },
+    {
+      "duration_ms": 53,
+      "failed_runs": 0,
+      "id": "C13",
+      "runs": 1
+    },
+    {
+      "duration_ms": 56,
+      "failed_runs": 0,
+      "id": "C14",
+      "runs": 1
+    },
+    {
+      "duration_ms": 59,
+      "failed_runs": 0,
+      "id": "C15",
+      "runs": 1
+    },
+    {
+      "duration_ms": 62,
+      "failed_runs": 0,
+      "id": "C16",
+      "runs": 1
+    },
+    {
+      "duration_ms": 65,
+      "failed_runs": 0,
+      "id": "C17",
+      "runs": 1
+    },
+    {
+      "duration_ms": 68,
+      "failed_runs": 0,
+      "id": "C18",
+      "runs": 1
+    },
+    {
+      "duration_ms": 71,
+      "failed_runs": 0,
+      "id": "C19",
+      "runs": 1
+    },
+    {
+      "duration_ms": 74,
+      "failed_runs": 0,
+      "id": "C20",
+      "runs": 1
+    },
+    {
+      "duration_ms": 77,
+      "failed_runs": 0,
+      "id": "C21",
+      "runs": 1
+    },
+    {
+      "duration_ms": 80,
+      "failed_runs": 0,
+      "id": "C22",
+      "runs": 1
+    },
+    {
+      "duration_ms": 83,
+      "failed_runs": 0,
+      "id": "C23",
+      "runs": 1
+    },
+    {
+      "duration_ms": 86,
+      "failed_runs": 0,
+      "id": "C24",
+      "runs": 1
+    },
+    {
+      "duration_ms": 89,
+      "failed_runs": 0,
+      "id": "C25",
+      "runs": 1
+    },
+    {
+      "duration_ms": 92,
+      "failed_runs": 0,
+      "id": "C26",
+      "runs": 1
+    },
+    {
+      "duration_ms": 95,
+      "failed_runs": 0,
+      "id": "C27",
+      "runs": 1
+    },
+    {
+      "duration_ms": 212,
+      "failed_runs": 0,
+      "id": "C28",
+      "runs": 1
+    }
+  ],
+  "elevation": {
+    "authenticate": "not_run",
+    "checks": {
+      "listing": "not_run",
+      "sandbox_probe": "not_run",
+      "service_account": "not_run"
+    },
+    "clear_error": null,
+    "cleared": "not_attempted",
+    "consent": "no",
+    "count": {
+      "cleanup": "not_applicable",
+      "ending": "not_run"
+    },
+    "mode": "none",
+    "power": {
+      "cleanup": "not_applicable",
+      "ending": "not_run"
+    },
+    "prepare": "not_run",
+    "skip_cause": null
+  },
+  "not_an_evidence_bundle": true,
+  "platform": {
+    "validated": true
+  },
+  "render": {
+    "paper": "a4"
+  },
+  "report_id": "sha256:3a08841fea8a01433242dc69480392ff7418ee0d1a6b3e1d56b6637edf9a9ee0",
+  "schema": "voltry-mac-report/0",
+  "surfaces": [
+    {
+      "availability": "available",
+      "interface": "sw_vers (C1)",
+      "key": "os_version",
+      "privilege": "user",
+      "temporal_class": "provenance",
+      "values": {
+        "build_version": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "25G83"
+        },
+        "product_name": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "macOS"
+        },
+        "product_version": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "26.6.2"
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "system_profiler SPHardwareDataType (C2)",
+      "key": "hardware_overview",
+      "privilege": "user",
+      "temporal_class": "identity",
+      "values": {
+        "activation_lock_enabled": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": true
+        },
+        "chip_type": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "Apple M5"
+        },
+        "machine_model": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "Mac17,2"
+        },
+        "machine_name": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "MacBook Pro"
+        },
+        "model_number": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "MDE34LL/A"
+        },
+        "physical_memory_text": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "24 GB"
+        },
+        "serial_last4": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "K7Q2"
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "C2, the same run",
+      "key": "firmware_and_boot",
+      "privilege": "user",
+      "temporal_class": "provenance",
+      "values": {
+        "boot_rom_version": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "18000.161.10"
+        },
+        "os_loader_version": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "18000.161.10"
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "system_profiler SPNVMeDataType (C3)",
+      "key": "nvme_devices",
+      "privilege": "user",
+      "temporal_class": "instant",
+      "values": {
+        "bsd_name": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "disk0"
+        },
+        "device_model": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "APPLE SSD AP1024Z"
+        },
+        "device_revision": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "1001.160.2"
+        },
+        "entry_count": {
+          "availability": "available",
+          "provenance": "derived",
+          "value": 1
+        },
+        "size_bytes": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": 1000555581440
+        },
+        "size_text": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "1 TB"
+        },
+        "smart_status": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "Verified"
+        },
+        "trim_support": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": true
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "system_profiler SPDisplaysDataType (C4)",
+      "key": "gpu_configuration",
+      "privilege": "user",
+      "temporal_class": "identity",
+      "values": {
+        "core_count": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": 10
+        },
+        "metal_family": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "Metal 4"
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "system_profiler SPMemoryDataType (C5)",
+      "key": "memory_configuration",
+      "privilege": "user",
+      "temporal_class": "identity",
+      "values": {
+        "manufacturer": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "Micron"
+        },
+        "memory_type": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "LPDDR5"
+        },
+        "size_text": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "24 GB"
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "system_profiler SPPowerDataType (C6)",
+      "key": "battery_health",
+      "privilege": "user",
+      "temporal_class": "instant",
+      "values": {
+        "charger_connected": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": true
+        },
+        "condition": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "Good"
+        },
+        "cycle_count": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": 57
+        },
+        "fully_charged": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": true
+        },
+        "gauge_device_name": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "bq40z651"
+        },
+        "gauge_firmware_version": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "0c02"
+        },
+        "gauge_hardware_revision": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "0100"
+        },
+        "is_charging": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": false
+        },
+        "maximum_capacity_percent": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": 99
+        },
+        "state_of_charge_percent": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": 100
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "ioreg -r -c AppleSmartBattery -a (C7)",
+      "key": "battery_gauge",
+      "privilege": "user",
+      "temporal_class": "counter",
+      "values": {
+        "cycle_count": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": 57
+        },
+        "design_capacity_mah": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": 6249
+        },
+        "design_cycle_count": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": 1000
+        },
+        "full_charge_capacity_mah": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": 5954
+        },
+        "permanent_failure": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": false
+        },
+        "temperature_c": {
+          "availability": "available",
+          "provenance": "derived",
+          "value": "30.4"
+        },
+        "temperature_centi_c": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": 3040
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "pmset -g therm (C8)",
+      "key": "thermal_warning_level",
+      "privilege": "user",
+      "temporal_class": "instant",
+      "values": {
+        "thermal_warning_recorded": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": false
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "memory_pressure -Q (C9)",
+      "key": "memory_pressure",
+      "privilege": "user",
+      "temporal_class": "instant",
+      "values": {
+        "free_percent": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": 38
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "diskutil info -plist / (C11)",
+      "key": "startup_disk",
+      "privilege": "user",
+      "temporal_class": "provenance",
+      "values": {
+        "internal": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": true
+        },
+        "physical_store": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "disk0s2"
+        },
+        "physical_store_count": {
+          "availability": "available",
+          "provenance": "derived",
+          "value": 1
+        },
+        "solid_state": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": true
+        },
+        "whole_disk": {
+          "availability": "available",
+          "provenance": "derived",
+          "value": "disk0"
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "csrutil status (C12)",
+      "key": "sip_status",
+      "privilege": "user",
+      "temporal_class": "provenance",
+      "values": {
+        "enabled": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": true
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "spctl --status (C13)",
+      "key": "gatekeeper_status",
+      "privilege": "user",
+      "temporal_class": "provenance",
+      "values": {
+        "assessments_enabled": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": true
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "fdesetup status (C14)",
+      "key": "filevault_status",
+      "privilege": "user",
+      "temporal_class": "provenance",
+      "values": {
+        "enabled": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": true
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "sysctl -n <OID> (C15 to C25)",
+      "key": "kernel_and_platform",
+      "privilege": "user",
+      "temporal_class": "identity",
+      "values": {
+        "arm64": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": true
+        },
+        "cpu_brand": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "Apple M5"
+        },
+        "cpu_count": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": 10
+        },
+        "hw_model": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "Mac17,2"
+        },
+        "hw_target": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": "J714sAP"
+        },
+        "memory_bytes": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": 25769803776
+        },
+        "perf_level_count": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": 2
+        },
+        "perf_level_names": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": [
+            "Super",
+            "Efficiency"
+          ]
+        },
+        "perf_level_physical_cpus": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": [
+            4,
+            6
+          ]
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "sysctl -n kern.hv_vmm_present (C26)",
+      "key": "virtualization_state",
+      "privilege": "user",
+      "temporal_class": "instant",
+      "values": {
+        "vmm_present": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": false
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "sysctl -n kern.boottime (C27)",
+      "key": "boot_time",
+      "privilege": "user",
+      "temporal_class": "provenance",
+      "values": {
+        "boot_epoch_seconds": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": 1787933529
+        },
+        "boot_time_utc": {
+          "availability": "available",
+          "provenance": "derived",
+          "value": "2026-08-28T16:12:09Z"
+        },
+        "days_since_boot": {
+          "availability": "available",
+          "provenance": "derived",
+          "value": 26
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "IOKit SMARTReadData through the SMART child (C28)",
+      "key": "smart_health_snapshot",
+      "privilege": "user",
+      "temporal_class": "instant",
+      "values": {
+        "available_spare_percent": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": 100
+        },
+        "available_spare_threshold_percent": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": 99
+        },
+        "composite_temperature_c": {
+          "availability": "available",
+          "provenance": "derived",
+          "value": 35
+        },
+        "composite_temperature_k": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": 308
+        },
+        "critical_warning_byte": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": 0
+        },
+        "read_only_mode": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": false
+        },
+        "reliability_degraded": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": false
+        },
+        "spare_below_threshold": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": false
+        },
+        "temperature_warning": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": false
+        },
+        "unknown_warning_bits": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": false
+        },
+        "volatile_backup_failed": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": false
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "C28, the same read",
+      "key": "smart_wear_attributes",
+      "privilege": "user",
+      "temporal_class": "counter",
+      "values": {
+        "bytes_read": {
+          "availability": "available",
+          "provenance": "derived",
+          "value": "20934254080000"
+        },
+        "bytes_written": {
+          "availability": "available",
+          "provenance": "derived",
+          "value": "13321930752000"
+        },
+        "data_units_read": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": "40887215"
+        },
+        "data_units_written": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": "26019396"
+        },
+        "error_log_entries": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": "0"
+        },
+        "media_errors": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": "0"
+        },
+        "percentage_used": {
+          "availability": "available",
+          "provenance": "reported",
+          "value": 1
+        },
+        "power_cycles": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": "147"
+        },
+        "power_on_hours": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": "427"
+        },
+        "unsafe_shutdowns": {
+          "availability": "available",
+          "provenance": "measured",
+          "value": "5"
+        }
+      }
+    },
+    {
+      "availability": "available",
+      "interface": "count of .panic names under /Library/Logs/DiagnosticReports (R1)",
+      "key": "panic_report_count",
+      "privilege": "admin",
+      "temporal_class": "retained",
+      "values": {
+        "count": {
+          "availability": "available",
+          "provenance": "derived",
+          "value": 0
+        }
+      }
+    },
+    {
+      "availability": "unavailable",
+      "detail": "not_attempted",
+      "interface": "sqlite3 on Apple's private store, as _mmaintenanced (S3)",
+      "key": "memory_error_ledger",
+      "privilege": "service",
+      "reason": "declined",
+      "temporal_class": "retained",
+      "values": {}
+    },
+    {
+      "availability": "unavailable",
+      "detail": "not_attempted",
+      "interface": "powermetrics (S4)",
+      "key": "power_and_thermal_samples",
+      "privilege": "root",
+      "reason": "declined",
+      "temporal_class": "instant",
+      "values": {}
+    },
+    {
+      "availability": "unavailable",
+      "interface": "none: the fixed statement that macOS has no public interface",
+      "key": "ecc_ras_telemetry",
+      "privilege": "user",
+      "reason": "unsupported",
+      "temporal_class": "coverage",
+      "values": {}
+    }
+  ],
+  "time_zone": "America/Los_Angeles",
+  "tool": {
+    "architecture": "arm64",
+    "name": "voltry-mac",
+    "python": "3.12.11",
+    "renderer_version": "1",
+    "rosetta": false,
+    "version": "0.1.0"
+  }
+}

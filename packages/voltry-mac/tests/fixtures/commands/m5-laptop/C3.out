@@ -1,0 +1,46 @@
+{
+  "SPNVMeDataType" : [
+    {
+      "_items" : [
+        {
+          "_name" : "APPLE SSD AP1024Z",
+          "bsd_name" : "disk0",
+          "detachable_drive" : "no",
+          "device_model" : "APPLE SSD AP1024Z",
+          "device_revision" : "2973.120",
+          "device_serial" : "SYNTH0000001",
+          "partition_map_type" : "guid_partition_map_type",
+          "removable_media" : "no",
+          "size" : "1 TB",
+          "size_in_bytes" : 1000555581440,
+          "smart_status" : "Verified",
+          "spnvme_trim_support" : "Yes",
+          "volumes" : [
+            {
+              "_name" : "Synthetic name 1",
+              "bsd_name" : "disk0s1",
+              "iocontent" : "Apple_APFS_ISC",
+              "size" : "576.7 MB",
+              "size_in_bytes" : 576716800
+            },
+            {
+              "_name" : "Synthetic name 2",
+              "bsd_name" : "disk0s2",
+              "iocontent" : "Apple_APFS",
+              "size" : "994.61 GB",
+              "size_in_bytes" : 994610155520
+            },
+            {
+              "_name" : "Synthetic name 3",
+              "bsd_name" : "disk0s3",
+              "iocontent" : "Apple_APFS_Recovery",
+              "size" : "5.37 GB",
+              "size_in_bytes" : 5368664064
+            }
+          ]
+        }
+      ],
+      "_name" : "Apple SSD Controller"
+    }
+  ]
+}

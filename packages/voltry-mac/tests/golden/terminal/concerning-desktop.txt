@@ -1,0 +1,89 @@
+MAC HARDWARE OBSERVATION REPORT
+Point-in-time observations, not a diagnosis, grade or certificate.
+Mac Studio (Mac14,14), Apple M2 Ultra. 23 Sep 2026, 16:40 (UTC-7).
+ID 3e1cf9398636
+Collection: partial. 19 read, 0 skipped, 2 unavailable,
+2 not applicable.
+Unexpected: a format this version does not recognize.
+Administrator reads: asked, granted, cleared.
+Validated configuration: no. This configuration has not been
+validated by Voltry yet; more items than usual may be unavailable.
+
+AT A GLANCE
+  Storage   SSD reports a critical warning: spare capacity     reported
+            below its threshold.
+  Storage   3 media errors on the controller's counter.        measured
+  Memory    14 correctable and 2 uncorrectable records in      measured
+            macOS's private memory error log. Records exist;
+            how far back the log reaches is unknown.
+  Thermal   Heavy in 3 of 5 samples, Nominal in 2.             derived
+  Security  System Integrity Protection is off.                reported
+  Battery   Not applicable: this Mac has no battery.
+  Not read  Memory pressure: macOS returned a format this version
+            does not recognize. GPU power: not reported by macOS.
+            ECC error counters: no public interface on Macs.
+
+WHAT THIS REPORT CANNOT TELL YOU
+  - Why the SSD reports a warning, or whether it will fail. It shows
+    what the controller reports now.
+  - Whether the memory errors are ongoing. The log holds records, not
+    a rate, and its retention is unknown.
+  - Its complete prior use. Controller counters give limited
+    device-reported history (power-on hours, data written); nothing
+    here shows how it was used, or how long it will last.
+  - Repair history. System Settings, General, About, Parts and
+    Service shows Apple's own view.
+  - Value or price. Voltry does not assess either.
+
+THIS MAC                                             as macOS reports it
+  Model             Mac Studio, Mac14,14, model number MQH63LL/A
+  Chip              Apple M2 Ultra: 16 Performance and 8 Efficiency cores,
+                    60-core GPU
+  Memory            64 GB LPDDR5 (Hynix)
+  Startup disk      APPLE SSD AP1024Z, 1 TB, the internal SSD (disk0)
+  Serial number     ending in M3XJ (add --show-serial to print it)
+  macOS             27.0 (26A350), firmware 18500.1.8
+
+SECURITY SETTINGS                                    as macOS reports it
+  System Integrity Protection  Off
+  Gatekeeper                   On
+  FileVault                    On
+  Activation Lock              On
+
+SYSTEM RECORDS                 from the boot clock and the crash reports
+  Last restart      2 Sep 2026, 21 days ago                     derived
+  Panic reports     3 kept on this Mac                          derived
+
+STORAGE HEALTH AND WEAR                        from macOS's disk profile
+  SMART status        Failing                                   reported
+                                  from the disk's own controller (IOKit)
+  Critical warning    spare capacity below threshold (bit 0)    reported
+  Endurance used      97%                                       reported
+  Available spare     3% (threshold 10%)                        reported
+  Data written        1.8 PB (3,593,750,000 units of 512,000 B) derived
+  Power-on hours      31,208                                    measured
+  Unsafe shutdowns    41                                        measured
+  Media errors        3                                         measured
+  Error log entries   17                                        measured
+  Temperature now     52 °C                                     derived
+
+BATTERY
+  Not applicable: this Mac has no battery.
+
+MEMORY
+  Memory pressure now   Could not read: macOS returned a format this version
+                        does not recognize
+  Memory error records  14 correctable, 2 uncorrectable         measured
+    From Apple's private memory error log: undocumented, retention
+    unknown. These are records present now; counts are not a rate.
+  ECC error counters    Unavailable: macOS has no public interface
+
+POWER AND THERMAL CHECK (5 seconds, no load applied)
+  Thermal pressure    Heavy in 3 of 5 samples, Nominal in 2     derived
+  Processor power     18.4 to 41.9 W combined, average 29.7 W   derived
+  CPU power           11.0 to 33.1 W, average 21.8 W            derived
+  GPU power           Not reported by macOS
+  Neural Engine       0.8 to 2.6 W, average 1.7 W               derived
+  Each sample is a macOS estimate (reported); the ranges, averages
+  and counts are computed from the 5 samples (derived). Not wall
+  power. Not comparable between Macs.

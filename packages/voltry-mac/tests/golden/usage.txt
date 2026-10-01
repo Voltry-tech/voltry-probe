@@ -1,0 +1,5 @@
+usage: voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]
+                  [--show-serial] [--paper letter|a4] [--debug]
+       voltry-mac --dry-run           print every command it can run; run none
+       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON
+       voltry-mac --version

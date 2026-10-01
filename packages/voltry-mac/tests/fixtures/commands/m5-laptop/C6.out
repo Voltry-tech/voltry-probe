@@ -1,0 +1,85 @@
+{
+  "SPPowerDataType" : [
+    {
+      "_name" : "spbattery_information",
+      "sppower_battery_charge_info" : {
+        "sppower_battery_at_warn_level" : "FALSE",
+        "sppower_battery_fully_charged" : "TRUE",
+        "sppower_battery_is_charging" : "FALSE",
+        "sppower_battery_state_of_charge" : 100
+      },
+      "sppower_battery_health_info" : {
+        "sppower_battery_cycle_count" : 58,
+        "sppower_battery_health" : "Good",
+        "sppower_battery_health_maximum_capacity" : "99%"
+      },
+      "sppower_battery_model_info" : {
+        "sppower_battery_cell_revision" : "271d",
+        "sppower_battery_device_name" : "bq40z651",
+        "sppower_battery_firmware_version" : "0b00",
+        "sppower_battery_hardware_revision" : "0100",
+        "sppower_battery_pack_lot_code" : "SYNTH0000001",
+        "sppower_battery_pcb_lot_code" : "SYNTH0000001",
+        "sppower_battery_serial_number" : "SYNTH0000002"
+      }
+    },
+    {
+      "_name" : "sppower_information",
+      "AC Power" : {
+        "Disk Sleep Timer" : 10,
+        "Display Sleep Timer" : 10,
+        "Hibernate Mode" : 3,
+        "LowPowerMode" : "No",
+        "PrioritizeNetworkReachabilityOverSleep" : "No",
+        "Sleep On Power Button" : "Yes",
+        "System Sleep Timer" : 1,
+        "Wake On LAN" : "Yes"
+      },
+      "Battery Power" : {
+        "Current Power Source" : "TRUE",
+        "Disk Sleep Timer" : 10,
+        "Display Sleep Timer" : 2,
+        "Hibernate Mode" : 3,
+        "LowPowerMode" : "No",
+        "PrioritizeNetworkReachabilityOverSleep" : "No",
+        "ReduceBrightness" : "Yes",
+        "Sleep On Power Button" : "Yes",
+        "System Sleep Timer" : 1,
+        "Wake On LAN" : "No"
+      }
+    },
+    {
+      "_name" : "sppower_hwconfig_information",
+      "sppower_ups_installed" : "FALSE"
+    },
+    {
+      "_name" : "sppower_ac_charger_information",
+      "sppower_battery_charger_connected" : "FALSE",
+      "sppower_battery_is_charging" : "FALSE"
+    },
+    {
+      "_items" : [
+        {
+          "_items" : [
+            {
+              "appPID" : 0,
+              "eventtype" : "wake",
+              "scheduledby" : "com.example.synthetic1",
+              "time" : "2026-01-01 00:00:00 +0000",
+              "UserVisible" : false
+            },
+            {
+              "appPID" : 0,
+              "eventtype" : "wake",
+              "scheduledby" : "com.example.synthetic2",
+              "time" : "2026-01-01 00:00:00 +0000",
+              "UserVisible" : false
+            }
+          ],
+          "_name" : "sppower_scheduled_events_info"
+        }
+      ],
+      "_name" : "sppower_events_info"
+    }
+  ]
+}

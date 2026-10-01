@@ -1,0 +1,174 @@
+=== render's problems
+(top level)
+1 to 4 digits
+C28's table needs a failed run here
+C28's table needs no failed run here
+NaN or Infinity
+O1 runs after the files are published and never has a record
+a Python version such as 3.12.11
+a cleanup is not applicable exactly when its step did not run
+a cleanup listing failed, so one listing failed
+a computed value is available when its inputs are
+a computed value is unavailable when an input is
+a control, separator, bidirectional or surrogate character
+a duplicate key
+a float
+a float has no canonical form; write a decimal string
+a key longer than {} characters
+a payload that never started leaves no survivor
+a required field is missing
+a required value key is missing
+a second record for one ID
+a skip cause is present exactly when consent is skipped
+always 5 while the surface is available
+an IANA identifier or unknown
+an answered prompt runs the interactive forms
+an available power surface keeps at least one of its samples
+an available surface needs at least one available value
+an error code is present exactly when the final clear failed
+an integer of more than {} digits
+an unknown field
+below the save gate: at least 8 surfaces must be available, including hardware_overview or kernel_and_platform
+disagrees with boot_epoch_seconds
+disagrees with critical_warning_byte
+disagrees with its series
+disagrees with the boot and the collection instant
+disagrees with the elevation record
+disagrees with the samples
+disagrees with {}
+does not follow from the surfaces
+does not match the surfaces
+every key must be a string
+has no record for {}
+its first value's command did not fail
+its sysctl call did not fail
+its sysctl call failed, so this value is unavailable
+larger than the 4 MiB limit
+longer than {} characters
+mode is none exactly when consent is no or skipped
+must be a 64-bit integer
+must be a PEP 440 version of at most 32 characters
+must be a UTC time in the form YYYY-MM-DDTHH:MM:SSZ
+must be a canonical decimal string
+must be a digit string no greater than (2^128-1) x 512,000
+must be a digit string no greater than 2^128-1
+must be a local time in the form YYYY-MM-DDTHH:MM:SS+HH:MM
+must be a string
+must be an array
+must be an array of 27 to 34 command records
+must be an array of at most 9 reason codes
+must be an array of the 23 registry surfaces, in order
+must be an object
+must be available or unavailable; no value is not applicable
+must be empty unless the surface is available
+must be exactly four characters
+must be from 2000-01-01 to the collection instant
+must be from {} to {}
+must be one of {}
+must be physical_store without its final s and digits
+must be the registry's surface {}, {}
+must be the registry's {} for {}
+must be the startup disk's whole-disk name
+must be the unexpected reasons present on the surfaces and values
+must be true
+must be true or false
+must be {}
+must be {}, as the registry assigns
+must carry the reason of its first unavailable input
+must carry the whole disk's reason
+must denote the same instant as collected_at_utc
+must have exactly {} elements
+must have one or two elements
+must have perf_level_count elements
+must hold distinct reason codes in ascending order
+nested deeper than {} levels
+no listing failed
+not UTF-8 text
+not a real UTC offset
+not a real calendar instant
+not a reason the storage chain gives while C3 ran
+not a reason this surface's availability domain allows
+not a reason this value may carry
+not a value key of this surface
+not an allow-list ID
+not in the form this key takes
+not the detail the outcome tables give for this record
+not the reason the outcome tables give for this record
+not well-formed JSON
+nothing runs without consent
+one listing, the check that failed
+only the temperature and spare fields can fail their bounds on an available SMART surface
+only the two battery surfaces can be not applicable
+out of allow-list order
+present exactly when a thermal warning is recorded
+present only on an unavailable elevated surface
+present only on an unavailable surface
+present only on an unavailable value
+sha256: and 64 lowercase hex digits
+sudo -k runs exactly when consent was given and both checks succeeded
+sudo asks exactly when sudo -k succeeded
+the SMART surfaces are unavailable while the whole disk is
+the account is looked up once consent is given
+the check failed, so one listing failed
+the count runs exactly when access was granted and the account exists
+the elevation record says this command did not run
+the elevation record says {} ran, and it has no record
+the final clear runs exactly when sudo -k ran
+the four counts must sum to 23
+the full serial must end with serial_last4
+the listing runs exactly when the probe succeeded
+the power sample runs exactly when access was granted and the count ended safely
+the record says this payload parsed, so this surface is available
+the record says this surface was not read
+the report ID does not recompute from this document
+the sandbox probe runs once consent is given
+the top level is not an object
+the two SMART surfaces come from one log and share one availability
+the two SMART surfaces come from one log and share one reason
+the two battery surfaces are not applicable together or not at all
+with one physical store, a store that did not read is source_changed
+with the whole disk known, an entry field that did not read is source_changed
+{} did not fail
+{} failed once, so every surface it feeds carries the same reason
+{} failed, so this surface is unavailable
+{} is not a JSON type
+{} is not allowed
+
+=== the output writer's reasons
+a saved file was replaced before it was checked
+a saved file's owner is not this user
+every name for this minute, up to (99), is taken
+no second temporary file is made while the first is still there
+no temporary name was free
+the account database has no home folder for this account
+the folder's path could not be read
+the folder's path is too long for the report's name
+this account's home folder is not an absolute path
+this folder's disk cannot save the report safely, because its format has no hard links
+voltry-mac does not save a report as root
+
+=== the command line
+--output needs a folder
+--paper takes letter or a4
+--yes skips Voltry's own question only. With a terminal, sudo may still ask for\nyour password; without one, sudo cannot ask.\n--yes and --no-root contradict each other and are refused (exit 2).
+A point-in-time hardware observation report for this Mac. Point-in-time\nobservations, not a diagnosis, grade or certificate.
+Rebuild the PDF from a saved JSON. Collects nothing.
+also save the report's JSON beside the PDF
+do not open the PDF
+paper size; by default, from your region
+print each command's ID, template, exit code and duration to stderr
+print every command this version can run, and run none
+print the version and exit
+render needs REPORT.json
+render takes only REPORT.json, --output DIR and --no-open
+save the PDF in DIR
+save the report in DIR, an existing folder, instead of the Desktop
+show the full serial number instead of its last four characters
+skip Voltry's own question; with no terminal, sudo cannot ask
+skip the two administrator reads
+voltry-mac [--no-root] [--yes] [--output DIR] [--json] [--no-open]\n                  [--show-serial] [--paper letter|a4] [--debug]\n       voltry-mac --dry-run           print every command it can run; run none\n       voltry-mac render REPORT.json  rebuild the PDF from a saved JSON\n       voltry-mac --version
+voltry-mac could not read this command line
+voltry-mac does not take these arguments here:
+voltry-mac does not take this argument here:
+voltry-mac render REPORT.json [--output DIR] [--no-open]
+{option} takes no argument

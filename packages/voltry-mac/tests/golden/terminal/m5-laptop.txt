@@ -1,0 +1,85 @@
+MAC HARDWARE OBSERVATION REPORT
+Point-in-time observations, not a diagnosis, grade or certificate.
+MacBook Pro (Mac17,2), Apple M5. 23 Sep 2026, 14:05 (UTC-7). ID 5331136e3e93
+Collection: complete. 22 read, 0 skipped, 1 unavailable (no public
+interface on Macs).
+Administrator reads: asked, granted, cleared.
+Validated configuration: yes.
+
+AT A GLANCE
+  Storage   SSD reports 1% of its rated endurance used.        reported
+  Battery   macOS reports condition Good, capacity 99%.        reported
+  Memory    0 records in macOS's private memory error log.     measured
+            That does not prove the memory never had errors.
+  Thermal   Nominal in 5 of 5 samples.                         derived
+  Security  SIP, Gatekeeper, FileVault and Activation Lock on. reported
+  Not read  ECC error counters: no public interface on Macs.
+
+WHAT THIS REPORT CANNOT TELL YOU
+  - Whether the memory has ever had errors. Apple offers no public
+    memory error counter, and its private log has unknown retention.
+  - Its complete prior use. Controller counters give limited
+    device-reported history (power-on hours, data written); nothing
+    here shows how it was used, or how long it will last.
+  - Repair history. System Settings, General, About, Parts and
+    Service shows Apple's own view.
+  - Value or price. Voltry does not assess either.
+
+THIS MAC                                             as macOS reports it
+  Model             MacBook Pro, Mac17,2, model number MDE34LL/A
+  Chip              Apple M5: 4 Super and 6 Efficiency cores, 10-core GPU
+  Memory            24 GB LPDDR5 (Micron)
+  Startup disk      APPLE SSD AP1024Z, 1 TB, the internal SSD (disk0)
+  Serial number     ending in K7Q2 (add --show-serial to print it)
+  macOS             26.6.2 (25G83), firmware 18000.161.10
+
+SECURITY SETTINGS                                    as macOS reports it
+  System Integrity Protection  On
+  Gatekeeper                   On
+  FileVault                    On
+  Activation Lock              On
+
+SYSTEM RECORDS                 from the boot clock and the crash reports
+  Last restart      28 Aug 2026, 26 days ago                    derived
+  Panic reports     0 kept on this Mac                          derived
+
+STORAGE HEALTH AND WEAR                        from macOS's disk profile
+  SMART status        Verified                                  reported
+                                  from the disk's own controller (IOKit)
+  Endurance used      1%                                        reported
+  Available spare     100% (threshold 99%)                      reported
+  Data written        13.3 TB (26,019,396 units of 512,000 B)   derived
+  Power-on hours      427                                       measured
+  Unsafe shutdowns    5                                         measured
+  Media errors        0                                         measured
+  Error log entries   0                                         measured
+  Temperature now     35 °C                                     derived
+
+BATTERY                                        from macOS's power report
+  Condition           Good                                      reported
+  Maximum capacity    99%                                       reported
+  Charge now          100%, fully charged                       measured
+  Power source        charger connected, not charging           measured
+                                            from the battery's own gauge
+  Charge cycles       57                                        measured
+  Design cycle count  1,000                                     reported
+  Full charge now     5,954 mAh                                 measured
+  Design capacity     6,249 mAh                                 reported
+  Temperature         30.4 °C                                   derived
+
+MEMORY
+  Memory pressure now   38% free                                measured
+  Memory error records  0 correctable, 0 uncorrectable          measured
+    From Apple's private memory error log: undocumented, retention
+    unknown. Zero means none are recorded there now, not none ever.
+  ECC error counters    Unavailable: macOS has no public interface
+
+POWER AND THERMAL CHECK (5 seconds, no load applied)
+  Thermal pressure    Nominal in 5 of 5 samples                 derived
+  Processor power     0.6 to 2.7 W combined, average 1.7 W      derived
+  CPU power           0.6 to 2.7 W, average 1.6 W               derived
+  GPU power           0.05 to 0.06 W, average 0.05 W            derived
+  Neural Engine       0.0 W in every sample                     derived
+  Each sample is a macOS estimate (reported); the ranges, averages
+  and counts are computed from the 5 samples (derived). Not wall
+  power. Not comparable between Macs.
