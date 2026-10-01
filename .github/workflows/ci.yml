@@ -109,4 +109,8 @@ jobs:
             --ephemeral-key --out /tmp/bundle.json
           .smoke/bin/voltry cert /tmp/bundle.json --out /tmp/cert.html
       - name: Dependency audit
-        run: uv run --with pip-audit pip-audit --skip-editable
+        # PYSEC-2026-3552 (cryptography's PKCS#7 decryption functions) is skipped, an exception
+        # the owner recorded on 2026-09-30: neither package calls PKCS#7 decryption, and its fix,
+        # cryptography 50, waits on a schema release, since voltry-evidence-schema 1.2.2 caps
+        # cryptography below 50. The skip comes off with that release.
+        run: uv run --with pip-audit pip-audit --skip-editable --ignore-vuln PYSEC-2026-3552
