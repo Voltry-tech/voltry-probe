@@ -95,11 +95,6 @@ class _NvmlSpy:
         self.touched: set[str] = set()
 
     def __getattr__(self, name: str):
-        # Python's import machinery probes module dunders (__spec__, __name__, ...);
-        # 3.13 does so during the monkeypatched-module lookup. Those are not NVML
-        # symbols, so pass them straight through without gating.
-        if name.startswith("__") and name.endswith("__"):
-            return getattr(self._inner, name)
         assert ALLOWED_NVML.match(
             name
         ), f"live source touched an NVML symbol outside the approved read set: {name}"

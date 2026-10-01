@@ -1,0 +1,13 @@
+{
+  "description": "Shared golden vector for the org signing-key proof of possession. Asserted by this package's tests (tests/test_key_registration.py, the offline `voltry key register` tool) and by the Voltry platform's registration API tests, so the two independent implementations of the transcript cannot drift. Public material only: the private key that produced the signature was discarded when the vector was generated.",
+  "tag": "voltry.org.signer-pop/v1",
+  "org_id": "00000000-0000-4000-8000-0000000000aa",
+  "nonce_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+  "challenge": "vsc1.00000000-0000-4000-8000-0000000000aa.AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8",
+  "spki_der_hex": "3076301006072a8648ce3d020106052b8104002203620004c2564473bdffe888a128ec5e2e5db95d62d86c323885d7e1a164d7fd218eaab7b92b95081c4791306f2feaf78774189d568ec70517edcd84527f81eeeb260bc66102ccc516b6c54e9a00cbbd3ff774c0e8a0791662aa7e968022ed257be24b2c",
+  "fingerprint": "sha384:27af7b59d041bb728327fc74ba960dcf1880b28e03c723aab5ca2bfcf8f8d33b2bc14577b91097afa5cf9638a886f75c",
+  "transcript_len": 228,
+  "transcript_sha384": "2910e9404565c144dac36da32c09fac0c62033d2e6d5b43accccf142b72c32080f72864385355ec33a9a3aec7f6eeb37",
+  "signature_der_hex": "3065023030773190efbcb2e2009ce05fb74077b3e81340d911fe9e23edf5b84d4c36eb4ecd178e69ff637fd594de33fddeaf3452023100d0d56fa2b4241e246ad4e2502268a261ff664849bbbeb4549acacf27305fba9c5af204a7e9dcf30a93a3afc4ec46d105",
+  "proof": "vsr1.MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEwlZEc73_6IihKOxeLl25XWLYbDI4hdfhoWTX_SGOqre5K5UIHEeRMG8v6veHdBidVo7HBRftzYRSf4Hu6yYLxmECzMUWtsVOmgDLvT_3dMDooHkWYqp-loAi7SV74kss.MGUCMDB3MZDvvLLiAJzgX7dAd7PoE0DZEf6eI-31uE1MNutOzReOaf9jf9WU3jP93q80UgIxANDVb6K0JB4katTiUCJoomH_ZkhJu760VJrKzycwX7qcWvIEp-nc8wqTo6_E7EbRBQ"
+}

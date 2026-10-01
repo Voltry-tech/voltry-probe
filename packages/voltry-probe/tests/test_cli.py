@@ -6,6 +6,7 @@ import json
 import sys
 import types
 from pathlib import Path
+from urllib.parse import parse_qsl, urlsplit
 
 from cryptography.hazmat.primitives import serialization
 from evidence_schema import EvidenceBundle, GateResult, generate_keypair, verify_bundle
@@ -13,7 +14,7 @@ from evidence_schema.samples import worked_example_a_bundle
 from evidence_schema.sign import public_key_to_spki_b64
 from typer.testing import CliRunner
 
-from voltry_probe.cli import app
+from voltry_probe.cli import DEFAULT_INGEST_URL, app
 
 runner = CliRunner()
 FIXTURE = Path(__file__).resolve().parent / "fixtures" / "h100_read.json"
@@ -217,11 +218,18 @@ def _signed_bundle(tmp_path) -> Path:
     return bundle_path
 
 
-def _fake_httpx(status_code: int = 200, raise_error: bool = False):
-    """A stand-in httpx module recording post() calls (or raising HTTPError)."""
+def _fake_httpx(status_code: int = 200, raise_error: bool = False, body: str = ""):
+    """A stand-in httpx module recording post() calls (or raising HTTPError).
+
+    ``body`` is the raw response text; ``json()`` parses it the way httpx does, so a
+    non-JSON body raises json.JSONDecodeError (a ValueError).
+    """
     mod = types.ModuleType("httpx")
 
     class HTTPError(Exception):
+        pass
+
+    class InvalidURL(Exception):  # not an HTTPError, as in httpx
         pass
 
     calls: list[dict] = []
@@ -230,9 +238,12 @@ def _fake_httpx(status_code: int = 200, raise_error: bool = False):
         if raise_error:
             raise HTTPError("connection refused")
         calls.append({"url": url, "content": content, "headers": headers, "timeout": timeout})
-        return types.SimpleNamespace(status_code=status_code)
+        return types.SimpleNamespace(
+            status_code=status_code, text=body, json=lambda: json.loads(body)
+        )
 
     mod.HTTPError = HTTPError
+    mod.InvalidURL = InvalidURL
     mod.post = post
     mod.calls = calls
     return mod
@@ -248,6 +259,11 @@ def test_submit_requires_explicit_consent(tmp_path, monkeypatch):
     )
     assert result.exit_code == 2
     assert "opt-in" in _text(result).lower()
+    assert fake.calls == []
+    # The default endpoint does not loosen the gate: no --url, no consent, no upload.
+    default = runner.invoke(app, ["submit", str(bundle_path)])
+    assert default.exit_code == 2
+    assert "opt-in" in _text(default).lower()
     assert fake.calls == []
 
 
@@ -376,6 +392,139 @@ def test_submit_network_error_is_clean(tmp_path, monkeypatch):
     assert result.exit_code == 4
     assert "upload failed" in _text(result)
     assert "Traceback" not in _text(result)
+
+
+def _submit(bundle_path: Path, *extra: str):
+    return runner.invoke(app, ["submit", str(bundle_path), "--i-consent-to-submit", *extra])
+
+
+def _query(url: str) -> list[tuple[str, str]]:
+    return parse_qsl(urlsplit(url).query, keep_blank_values=True)
+
+
+def test_submit_defaults_to_the_voltry_registry(tmp_path, monkeypatch):
+    # An outsider who omits --url reaches the public registry, not a usage error.
+    fake = _fake_httpx(status_code=200)
+    monkeypatch.setitem(sys.modules, "httpx", fake)
+    result = _submit(_signed_bundle(tmp_path))
+    assert result.exit_code == 0, _text(result)
+    assert len(fake.calls) == 1
+    posted = urlsplit(fake.calls[0]["url"])
+    assert (posted.scheme, posted.netloc, posted.path) == ("https", "api.voltry.io", "/v1/ingest")
+    assert DEFAULT_INGEST_URL == "https://api.voltry.io/v1/ingest"
+
+
+def test_submit_sends_consent_to_the_server(tmp_path, monkeypatch):
+    # The platform refuses (consent_required) unless the request itself carries consent;
+    # the local flag has to travel with the upload as ?consent=true.
+    fake = _fake_httpx(status_code=200)
+    monkeypatch.setitem(sys.modules, "httpx", fake)
+    result = _submit(_signed_bundle(tmp_path), "--url", "https://ingest.example/v1")
+    assert result.exit_code == 0, _text(result)
+    assert fake.calls[0]["url"] == "https://ingest.example/v1?consent=true"
+
+
+def test_submit_merges_consent_into_an_existing_query(tmp_path, monkeypatch):
+    fake = _fake_httpx(status_code=200)
+    monkeypatch.setitem(sys.modules, "httpx", fake)
+    bundle_path = _signed_bundle(tmp_path)
+    for url in (
+        "https://ingest.example/v1?tenant=a",
+        "https://ingest.example/v1?tenant=a&consent=true",
+        "https://ingest.example/v1?consent=false&tenant=a",
+        "https://ingest.example/v1?consent=true&tenant=a&consent=0",
+    ):
+        fake.calls.clear()
+        result = _submit(bundle_path, "--url", url)
+        assert result.exit_code == 0, _text(result)
+        posted = fake.calls[0]["url"]
+        assert urlsplit(posted)[:3] == ("https", "ingest.example", "/v1"), posted
+        query = _query(posted)
+        # Other parameters survive; consent appears exactly once, and it is true.
+        assert ("tenant", "a") in query, posted
+        assert [v for k, v in query if k == "consent"] == ["true"], posted
+
+
+def test_submit_consent_merge_keeps_the_https_rule(tmp_path, monkeypatch):
+    # A query string on a plain-http URL does not smuggle it past the https check.
+    fake = _fake_httpx(status_code=200)
+    monkeypatch.setitem(sys.modules, "httpx", fake)
+    result = _submit(_signed_bundle(tmp_path), "--url", "http://ingest.example/v1?consent=true")
+    assert result.exit_code == 2
+    assert "https" in _text(result).lower()
+    assert fake.calls == []
+
+
+def _refusal(code: str, message: str) -> str:
+    return json.dumps({"detail": {"code": code, "message": message}})
+
+
+def test_submit_surfaces_the_server_refusal_reason(tmp_path, monkeypatch):
+    fake = _fake_httpx(
+        status_code=403,
+        body=_refusal("unauthorized_signer", "bundle signer is not an authorized key"),
+    )
+    monkeypatch.setitem(sys.modules, "httpx", fake)
+    result = _submit(_signed_bundle(tmp_path))
+    assert result.exit_code == 4
+    text = _text(result)
+    assert "HTTP 403" in text
+    assert "unauthorized_signer" in text
+    assert "bundle signer is not an authorized key" in text
+    # The one next step an outsider needs: get the key registered, and where to read how.
+    assert "registered with Voltry" in text
+    assert "Submitting to the Voltry registry" in text
+    assert "submitted" not in text
+    assert "Traceback" not in text
+
+
+def test_submit_other_refusals_show_reason_without_the_signer_hint(tmp_path, monkeypatch):
+    fake = _fake_httpx(
+        status_code=409, body=_refusal("duplicate_bundle", "bundle already recorded")
+    )
+    monkeypatch.setitem(sys.modules, "httpx", fake)
+    result = _submit(_signed_bundle(tmp_path))
+    assert result.exit_code == 4
+    text = _text(result)
+    assert "HTTP 409" in text
+    assert "duplicate_bundle: bundle already recorded" in text
+    assert "registered with Voltry" not in text
+
+
+def test_submit_unstructured_refusal_falls_back_to_the_status_line(tmp_path, monkeypatch):
+    bundle_path = _signed_bundle(tmp_path)
+    for status, body in (
+        (502, "<html><body>Bad Gateway</body></html>"),  # a proxy page, not JSON
+        (500, ""),  # no body at all
+        (422, json.dumps({"detail": [{"loc": ["query", "consent"], "msg": "bad"}]})),
+        (404, json.dumps({"detail": "Not Found"})),
+        (400, json.dumps({"detail": {"code": 7, "message": None}})),
+        (400, json.dumps(["not", "an", "object"])),
+    ):
+        fake = _fake_httpx(status_code=status, body=body)
+        monkeypatch.setitem(sys.modules, "httpx", fake)
+        result = _submit(bundle_path)
+        assert result.exit_code == 4, (status, body)
+        text = _text(result)
+        assert f"ERROR: platform rejected the upload: HTTP {status}" in text, (status, body)
+        assert "Traceback" not in text
+        assert "registered with Voltry" not in text
+
+
+def test_submit_refusal_text_is_sanitized_before_echo(tmp_path, monkeypatch):
+    # The refusal text comes from the server; it must not carry terminal control
+    # sequences to the operator's screen, and it is bounded in length.
+    fake = _fake_httpx(
+        status_code=400,
+        body=_refusal("bad\x1b[2Jcode", "clear\x1b]0;pwned\x07" + "x" * 5000),
+    )
+    monkeypatch.setitem(sys.modules, "httpx", fake)
+    result = _submit(_signed_bundle(tmp_path))
+    assert result.exit_code == 4
+    text = _text(result)
+    assert "\x1b" not in text and "\x07" not in text
+    assert "bad?[2Jcode" in text
+    assert "x" * 400 not in text
 
 
 def test_scan_encrypted_signing_key_is_clean_error(tmp_path):

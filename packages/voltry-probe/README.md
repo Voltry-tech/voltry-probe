@@ -34,6 +34,17 @@ For everything else (fixture scans, certificate rendering, verification):
 pipx install voltry-probe
 ```
 
+No pipx? A stock Mac ships neither pipx nor a recent enough Python. If you
+have [uv](https://docs.astral.sh/uv/) (for example from `brew install uv`), it
+installs the tool and fetches a Python for it in one step:
+
+```bash
+uv tool install --python 3.12 voltry-probe
+```
+
+Extras work the same way with either tool, for example
+`uv tool install --python 3.12 "voltry-probe[submit]"`.
+
 Requires Python 3.10 or newer; stock DGX OS and Ubuntu 22.04 hosts work as-is.
 `pip install` inside a virtualenv works too. Without `[hardware]`, a live
 `voltry scan` exits with a clean error naming the missing extra and the exact
@@ -54,7 +65,8 @@ voltry cert bundle.json --out cert.html
 ```
 
 That is the whole loop. `voltry submit` exists as a separate, explicit,
-opt-in step; scanning and rendering never phone home.
+opt-in step (see [Submitting to the Voltry registry](#submitting-to-the-voltry-registry));
+scanning and rendering never phone home.
 
 ## No GPU? Run the same loop on a captured fixture
 
@@ -132,6 +144,77 @@ itself. It does not prove that key belongs to an authorized signer, and it
 does not confirm the Signature envelope's `signer` or `signed_at` labels;
 those are confirmed against the registry at the platform verify endpoint,
 https://verify.voltry.io.
+
+## Submitting to the Voltry registry
+
+`voltry submit` is the only command that touches the network, and it does
+nothing unless you pass `--i-consent-to-submit`. It needs the `[submit]`
+extra (on a GPU host, `"voltry-probe[hardware,submit]"` gets both; with pipx,
+add `--force` if the probe is already installed without it):
+
+```bash
+pipx install "voltry-probe[submit]"
+voltry submit bundle.json --i-consent-to-submit
+```
+
+By default it uploads to the Voltry registry at
+`https://api.voltry.io/v1/ingest`. Pass `--url` to send the bundle to a
+different platform instead. The URL has to be https; plain http is only
+allowed with `--allow-insecure-http`, which is meant for a local test server.
+
+What leaves your machine is the bundle file exactly as `voltry scan` wrote
+it: every measured reading, the raw reads it was built from, and the device
+identifiers in it (serial number and GPU UUID). Before anything is sent, the
+command checks that the file is a valid bundle and that its signature
+verifies, and refuses to upload it otherwise. Your consent also travels with
+the request, as `consent=true` on the URL, because the registry turns away
+any upload that does not carry it. Accepted bundles are appended to the
+device's permanent history in the registry; they are not edited or removed
+later.
+
+### Your signing key has to be registered first
+
+Right now the registry only accepts self-submitted bundles signed by an
+operator key that Voltry has registered. That is what stops a stranger from
+flooding the registry with records. A bundle signed by any other key is
+turned away with `unauthorized_signer` (HTTP 403), and that includes every
+bundle made with `--ephemeral-key`, since a throwaway key can never be
+registered.
+
+To get set up:
+
+1. Create one persistent P-384 operator key and keep it private. This works
+   with the `openssl` that ships on macOS and on Linux:
+
+   ```bash
+   openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-384 -out operator.pem
+   chmod 600 operator.pem
+   ```
+
+2. Export its public half. This file is safe to share:
+
+   ```bash
+   openssl pkey -in operator.pem -pubout -out operator.pub.pem
+   ```
+
+3. There is no self-service registration yet. Contact Voltry
+   (https://www.voltry.io) and send them `operator.pub.pem`. Never send
+   `operator.pem`.
+
+4. Once the key is registered, scan with it and submit:
+
+   ```bash
+   voltry scan --signing-key operator.pem --out bundle.json
+   voltry submit bundle.json --i-consent-to-submit
+   ```
+
+Every bundle you sign carries the same public key in its
+`signature.public_key_spki_b64` field, and that is what the registry checks
+against its list.
+
+If the registry refuses an upload, `voltry submit` prints the reason code
+and message it sent back (for example `unauthorized_signer` or
+`duplicate_bundle`) and exits with status 4.
 
 ## Security
 

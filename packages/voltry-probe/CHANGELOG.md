@@ -3,6 +3,83 @@
 All notable changes to `voltry-probe` are documented here, newest first, one
 dated entry per release.
 
+## [0.3.3] - 2026-09-24
+
+Command-line release. No bundle-format change: this release stays on evidence-schema 1.x
+(the same `>=1.2.2,<2` requirement as 0.3.2), the bundle format is unchanged, and scan
+and cert behave as in 0.3.2. What changed is the command line: `voltry submit` now works
+for an outside operator, `voltry key register` and `voltry key fingerprint` are new, and
+`voltry submit --org-token-env` uploads to an organization.
+
+Fixes the path an outside operator takes through `voltry submit`.
+
+- `--url` now defaults to the Voltry registry ingest endpoint,
+  `https://api.voltry.io/v1/ingest`, so `voltry submit bundle.json --i-consent-to-submit`
+  works without it. Passing `--url` still sends the bundle anywhere else, and the
+  https-only rule is unchanged.
+- The consent flag now reaches the server. The platform refuses an upload with
+  `consent_required` unless the request carries `consent=true`, and the flag used to only
+  unlock the command locally, so an upload was refused unless the operator knew to add
+  `?consent=true` to `--url` by hand. The CLI now adds `consent=true` to the query
+  string, replacing any existing `consent` parameter rather than duplicating it and
+  keeping every other parameter.
+- A refused upload now says why. When the platform answers with its structured
+  `{"detail": {"code": ..., "message": ...}}` body, the CLI prints the code and message
+  after the HTTP status (control characters stripped, length bounded) instead of the bare
+  status alone, and an `unauthorized_signer` refusal adds a pointer to key registration.
+  Any other body falls back to the status line as before. Exit codes for a refusal are
+  unchanged.
+- README: a uv install option alongside pipx, and a "Submitting to the Voltry registry"
+  section covering the default endpoint, what the consent flag sends, and the current
+  requirement that self-submitted bundles be signed by a key registered with Voltry.
+
+Adds offline signing-key registration for organizations. No change to scan, cert, submit
+or the bundle format.
+
+- `voltry key register --signing-key PEM --challenge vsc1...` signs the registration
+  challenge the Voltry console shows and prints a `vsr1.` proof of possession to paste back,
+  plus the key fingerprint. Before signing it prints which organization the challenge is
+  for and asks for confirmation (default no); `--yes-this-is-my-org ORG_ID` confirms
+  without a prompt and must match the challenge's organization, or nothing is signed. A key
+  registers to one organization, once, so a challenge someone else sent you should never
+  be signed. The proof signature is ECDSA P-384 over SHA-384 in DER form.
+- `voltry key fingerprint --signing-key PEM` (or `--public-key PEM`) prints the key's
+  `sha384:` fingerprint, the value the console lists for a registered key.
+- Both commands are offline. The transcript is pinned by a golden vector shared with the
+  platform's own tests (`tests/fixtures/org_signer_pop_vector.json`).
+
+Adds organization uploads with an upload token. No change to scan, cert, the key commands
+or the bundle format, and `voltry submit` without the new flag behaves exactly as before.
+
+- `voltry submit --org-token-env NAME` uploads to your organization with the upload token
+  held in the environment variable `NAME` (created on the Signing keys page of the Voltry
+  console). The token is read from the environment only; no option takes the token
+  itself, and a token typed where the variable name goes is refused, with a note to revoke
+  it because it may be in your shell history. The token is never printed.
+- The value is checked locally for the `vot_` token shape before anything is sent. The
+  upload goes to `https://api.voltry.io/v1/org/upload` unless `--url` names another
+  organization upload endpoint (the path must end in `/v1/org/upload`), with the token in
+  the `X-Voltry-Upload-Token` header. Consent, the local signature check and the https
+  rule all still apply first, and with a token `--allow-insecure-http` allows plain http to
+  this machine only.
+- The bundle must be signed with a key registered to your organization. When it is not,
+  the platform refuses with `unregistered_signer` and the CLI says how to check which key
+  signed the bundle and how to register it. Records uploaded this way are private to your
+  organization.
+- The URL is checked before the token is read. The path must end in exactly
+  `/v1/org/upload` (a trailing slash is refused: the platform would answer with a redirect,
+  not an upload), plain http goes only to localhost, and a URL that does not parse (a bad
+  port, an unclosed IPv6 bracket) is a one-line error, exit 2, never a traceback.
+- `voltry submit` now treats any response outside 2xx as a failure (exit 4), with or
+  without a token. A redirect used to print "submitted" although nothing was recorded.
+  An `httpx.InvalidURL` from the HTTP client is a clean failure too.
+- Both command groups turn off Typer's local-variable display in tracebacks, which Typer
+  before 0.23 enabled by default, so an unexpected error can never print the token (or,
+  for the key commands, private key material). The dependency floor is now `typer>=0.23`
+  (from 0.12), and the setting stays explicit anyway.
+- A host the IDNA codec rejects (an invalid `xn--` label) is a clean upload failure, exit
+  4, instead of a traceback.
+
 ## [0.3.2] - 2026-07-12
 
 Security and honesty patch, backward compatible. No wire-format change. Depends on
