@@ -2,6 +2,9 @@
 # not itself a distributable package.
 [tool.uv.workspace]
 members = ["packages/*"]
+# voltry-mac takes Python 3.11 and later; the workspace keeps the other two packages' lock and
+# their 3.10 leg. CI tests voltry-mac in a venv of its own (the voltry-mac job).
+exclude = ["packages/voltry-mac"]
 
 [tool.uv]
 dev-dependencies = [
@@ -28,6 +31,9 @@ ignore = ["ANN401"]
 # fixtures not credentials (S105/S106); subprocess in tests uses sys.executable + literal
 # args, no shell (S603/S607).
 "**/tests/**" = ["S101", "ANN", "S105", "S106", "S603", "S607"]
+# voltry-mac's live macOS tests sit beside its tests/ in tests_live/, so that no default run
+# collects them; they are tests all the same.
+"**/tests_live/**" = ["S101", "ANN", "S105", "S106", "S603", "S607"]
 # Typer CLIs intentionally call Option()/Argument() in argument defaults, the
 # framework-idiomatic pattern that B008 flags.
 "**/cli.py" = ["B008"]

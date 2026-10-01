@@ -35,6 +35,50 @@ jobs:
           uv run --package voltry-evidence-schema pytest packages/evidence-schema -q
           uv run --package voltry-probe pytest packages/voltry-probe -q
 
+  voltry-mac:
+    # voltry-mac sits outside the uv workspace: its floor is Python 3.11, and the workspace tests
+    # the other two packages from 3.10. So it gets a venv of its own, with its test tools at the
+    # versions core's lock pins, on its floor and on the newest CPython, as core's voltry-mac.yml
+    # runs it on Linux. Its macOS-only tests skip here.
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "newest"]
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
+        with:
+          enable-cache: false
+      - name: A venv with the package and its test tools
+        # Outside the checkout. For the newest, uv gets an empty folder for Pythons, so it fetches
+        # the newest stable CPython its release knows, never an older one the runner holds.
+        working-directory: ${{ runner.temp }}
+        env:
+          PYTHON: ${{ matrix.python }}
+        run: |
+          if [ "$PYTHON" = "newest" ]; then
+            UV_PYTHON_INSTALL_DIR="$RUNNER_TEMP/python" uv venv --managed-python venv
+          else
+            uv venv --python "$PYTHON" venv
+          fi
+          uv pip install --python venv/bin/python "$GITHUB_WORKSPACE/packages/voltry-mac" \
+            pytest==9.1.0 pypdf==6.19.0 pypdfium2==5.13.0
+          venv/bin/python --version
+      - name: Tests
+        # From the repository root, so the checkout's voltry_mac/ never shadows the installed
+        # package; -c takes pytest's settings from the package's own pyproject.toml. test_copy.py
+        # and two tests in test_run.py check the package's words against its spec,
+        # docs/VOLTRY_MAC_SPEC.md, which lives in core and is not mirrored: core's CI runs them.
+        # --deselect takes test IDs from pytest's rootdir, the package's folder under -c.
+        run: |
+          "$RUNNER_TEMP/venv/bin/python" -m pytest -c packages/voltry-mac/pyproject.toml packages/voltry-mac/tests -rN \
+            --ignore=packages/voltry-mac/tests/test_copy.py \
+            --deselect "tests/test_run.py::test_the_explanation_and_the_question_are_decision_2s_words" \
+            --deselect "tests/test_run.py::test_the_fixed_lines_are_the_transcripts_words"
+
   quality:
     runs-on: ubuntu-latest
     steps:
